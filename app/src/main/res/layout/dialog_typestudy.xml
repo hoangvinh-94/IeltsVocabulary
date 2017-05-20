@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/imgStudy"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#FFFFFF"
+                android:cropToPadding="true"
+                android:scaleType="fitCenter"
+             	android:layout_margin="5dp"
+                android:src="@drawable/study" />
+
+            <ImageButton
+                android:id="@+id/imgGame"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#FFFFFF"
+                android:cropToPadding="true"
+                android:scaleType="fitCenter"
+                android:layout_margin="5dp"
+                android:src="@drawable/game" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/imgTest"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#FFFFFF"
+                android:cropToPadding="true"
+                android:scaleType="fitCenter"
+                android:layout_margin="5dp"
+                android:src="@drawable/test" />
+
+            <ImageButton
+                android:id="@+id/imgTest1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#FFFFFF"
+                android:cropToPadding="true"
+                android:scaleType="fitCenter"
+                android:layout_margin="5dp"
+                android:src="@drawable/category1" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
