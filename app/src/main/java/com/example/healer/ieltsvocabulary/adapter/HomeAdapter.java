@@ -3,78 +3,58 @@ package com.example.healer.ieltsvocabulary.adapter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
+import com.example.healer.ieltsvocabulary.HomeActivity;
 import com.example.healer.ieltsvocabulary.R;
+import com.example.healer.ieltsvocabulary.fragment.LessonFragment;
 import com.example.healer.ieltsvocabulary.model.*;
-import com.example.healer.ieltsvocabulary.fragment.*;
 
-import android.content.Context;
+import android.app.Activity;;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.sax.StartElementListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
-import static android.R.attr.fragment;
-import static com.example.healer.ieltsvocabulary.R.drawable.category1;
 
 
-public class HomeAdapter extends BaseAdapter  {
+public class HomeAdapter extends ArrayAdapter<Unit> {
 
 	ArrayList<Unit> arr = null;
-	Context context;
+	Activity context;
+	int layoutId;
 
-	
-	
-	public HomeAdapter(Context context, ArrayList<Unit> list) {
-		// TODO Auto-generated constructor stub
+
+
+	public HomeAdapter(Activity context, int layoutId, ArrayList<Unit> list){
+		super(context,layoutId,list);
 		this.context = context;
+		this.layoutId = layoutId;
 		this.arr = list;
-		
+
 	}
+
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		if(convertView==null){
-			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			//LayoutInflater inflater = context.getLayoutInflater();
-			convertView = inflater.inflate(R.layout.custom_home,null);
+		if(convertView == null){
+			LayoutInflater inflater = context.getLayoutInflater();
+			convertView = inflater.inflate(layoutId, null);
 		}
 		Unit unit = arr.get(position);
 		ImageButton img = (ImageButton) convertView.findViewById(R.id.img_unit);
-		Log.d("pathImage",unit.getName());
-		//img.setImageResource(R.drawable.category1);
-		//img.setImageResource(unit.getAvatar1());
-		//img.setImageURI(Uri.parse(unit.getAvatar()));
-		AssetManager mngr = this.context.getAssets();
-		InputStream is = null;
-		try {
-			is = mngr.open(unit.getAvatar());
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(is != null){
-			Bitmap bmImg = BitmapFactory.decodeStream(is);
-			img.setImageBitmap(bmImg);
-			try {
-				is.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		img.setImageBitmap(decodeFile(unit.getAvatar()));
+		img.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				LessonFragment lf = LessonFragment.newInstance(position);
+				context.getFragmentManager().beginTransaction().replace(R.id.fragment_container,lf).commit();
+
+				//Toast.makeText(context,"asdfas",Toast.LENGTH_SHORT).show();
 			}
-		}
+		});
 		return convertView;
 	}
 	@Override
@@ -87,10 +67,24 @@ public class HomeAdapter extends BaseAdapter  {
 		// TODO Auto-generated method stub
 		return arg0;
 	}
-	@Override
-	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
-		return arr.get(arg0);
+	// Decodes image and scales it to reduce memory consumption
+	private Bitmap decodeFile(String f){
+		AssetManager mngr = this.context.getAssets();
+		InputStream is = null;
+		try {
+            is = mngr.open(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		// Decode image size
+		BitmapFactory.Options o = new BitmapFactory.Options();
+		o.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(is,null,o);
+
+		// Decode with inSampleSize
+		BitmapFactory.Options o2 = new BitmapFactory.Options();
+		o2.inSampleSize=8;
+		return BitmapFactory.decodeStream(is, null, o2);
 	}
 
 

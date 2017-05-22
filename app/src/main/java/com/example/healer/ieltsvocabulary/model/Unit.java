@@ -1,16 +1,14 @@
 package com.example.healer.ieltsvocabulary.model;
 
 public class Unit {
-	String name;
-	String avatar;
-	int id;
-	int numberOfWord;
-	public Unit(){}
-	
-	
-	public Unit(int id,String name, int number, String avatar) {
-		super();
+	private String name;
+	private String avatar;
+	private int id;
+	private int numberOfWord;
+	public Unit(){
 		
+	}
+	public Unit(int id,String name, int number, String avatar) {
 		this.id = id;
 		this.name = name;
 		this.numberOfWord = number;

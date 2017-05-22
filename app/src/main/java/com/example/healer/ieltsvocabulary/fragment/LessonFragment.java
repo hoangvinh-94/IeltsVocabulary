@@ -12,6 +12,15 @@ import android.widget.ListView;
 
 public class LessonFragment extends  Fragment {
 	ArrayAdapter<String> lists = null;
+
+	public static LessonFragment newInstance(int pos) {
+		
+		Bundle args = new Bundle();
+		args.putInt("pos",pos);
+		LessonFragment fragment = new LessonFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle BundlesavedInstanceState){
 		View rootView = inflater.inflate(R.layout.category_lesson,container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listLesson);
@@ -24,8 +33,8 @@ public class LessonFragment extends  Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				StudyTypeDFragment studyTypeDFragment = new StudyTypeDFragment();
-				studyTypeDFragment.show(getFragmentManager(),"");
+				StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(arg2);
+				studyType.show(getActivity().getFragmentManager(),"");
 				
 			}
 			

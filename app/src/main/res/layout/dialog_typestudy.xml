@@ -19,21 +19,18 @@
                 android:id="@+id/imgStudy"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="#FFFFFF"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
-             	android:layout_margin="5dp"
-                android:src="@drawable/study" />
+                android:src="@drawable/study"
+             	android:layout_margin="5dp" />
 
             <ImageButton
                 android:id="@+id/imgGame"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="#FFFFFF"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
-                android:layout_margin="5dp"
-                android:src="@drawable/game" />
+                android:layout_margin="5dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,21 +42,19 @@
                 android:id="@+id/imgTest"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="#FFFFFF"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
                 android:layout_margin="5dp"
-                android:src="@drawable/test" />
+                 />
 
             <ImageButton
                 android:id="@+id/imgTest1"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="#FFFFFF"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
                 android:layout_margin="5dp"
-                android:src="@drawable/category1" />
+                 />
         </LinearLayout>
     </LinearLayout>
 
