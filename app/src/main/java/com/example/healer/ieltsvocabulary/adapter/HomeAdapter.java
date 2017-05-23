@@ -43,14 +43,14 @@ public class HomeAdapter extends ArrayAdapter<Unit> {
 			LayoutInflater inflater = context.getLayoutInflater();
 			convertView = inflater.inflate(layoutId, null);
 		}
-		Unit unit = arr.get(position);
+		final Unit unit = arr.get(position);
 		ImageButton img = (ImageButton) convertView.findViewById(R.id.img_unit);
 		img.setImageBitmap(decodeFile(unit.getAvatar()));
 		img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				LessonFragment lf = LessonFragment.newInstance(position);
-				context.getFragmentManager().beginTransaction().replace(R.id.fragment_container,lf).commit();
+				LessonFragment lf = LessonFragment.newInstance(position,unit.getId());
+				context.getFragmentManager().beginTransaction().replace(R.id.fragment_container,lf).addToBackStack(null).commit();
 
 				//Toast.makeText(context,"asdfas",Toast.LENGTH_SHORT).show();
 			}

@@ -21,7 +21,6 @@
                 android:layout_height="100dp"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/study"
              	android:layout_margin="5dp" />
 
             <ImageButton
