@@ -21,10 +21,10 @@ import java.io.InputStream;
 
 public class StudyTypeDFragment extends DialogFragment implements OnClickListener {
 
-	public static StudyTypeDFragment newInstance(int pos) {
-		
+	public static StudyTypeDFragment newInstance(int idLesson, int idUnit) {
 		Bundle args = new Bundle();
-		args.putInt("pos",pos);
+		args.putInt("idLesson",idLesson);
+		args.putInt("idUnit",idUnit);
 		StudyTypeDFragment fragment = new StudyTypeDFragment();
 		fragment.setArguments(args);
 		return fragment;
@@ -74,6 +74,10 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 		switch(v.getId()){
 		case R.id.imgStudy:{
 			Intent intent = new Intent(this.getActivity(),LessonActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putInt("idLesson", getArguments().getInt("idLesson"));
+			bundle.putInt("idUnit", getArguments().getInt("idUnit"));
+			intent.putExtra("id",bundle);
 			startActivity(intent);
 			Toast.makeText(getActivity(), "You clicked on Study Button", Toast.LENGTH_SHORT).show();
 			break;
