@@ -16,6 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LessonActivity"></activity>
+        <provider android:name=".data.IeltsProvider"
+            android:authorities="com.example.healer.ieltsvocabulary.data.IeltsProvider"/>
     </application>
 
 </manifest>

@@ -1,10 +1,9 @@
 package com.example.healer.ieltsvocabulary.fragment;
 
 import com.example.healer.ieltsvocabulary.R;
-import com.example.healer.ieltsvocabulary.adapter.MyDataBaseAdapter;
+import com.example.healer.ieltsvocabulary.data.LoadDataBaseSQLiteHelper;
 import com.example.healer.ieltsvocabulary.adapter.NumOfLessonAdapter;
 import com.example.healer.ieltsvocabulary.model.Lesson;
-import com.example.healer.ieltsvocabulary.model.Unit;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import android.app.Fragment;
@@ -16,20 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
 
 public class LessonFragment extends  Fragment {
 	NumOfLessonAdapter lists = null;
-	MyDataBaseAdapter myData = null;
+	LoadDataBaseSQLiteHelper myData = null;
 	SQLiteDatabase myDataBase = null;
 	ArrayList<Vocabulary> list = null;
 	int id;
-	public static LessonFragment newInstance(int pos,int id) {
+
+	// create New LessonFragment with possition and id Unit
+	public static LessonFragment newInstance(int pos, int id) {
 
 		Bundle args = new Bundle();
 		args.putInt("pos",pos);
@@ -39,10 +37,11 @@ public class LessonFragment extends  Fragment {
 
 		return fragment;
 	}
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle BundlesavedInstanceState){
 		View rootView = inflater.inflate(R.layout.category_lesson,container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listLesson);
-		myData = new MyDataBaseAdapter(this.getActivity());
+		myData = new LoadDataBaseSQLiteHelper(this.getActivity());
 		myData.open();
 		myDataBase = myData.getMyDatabase();
 		list = new ArrayList<Vocabulary>();
