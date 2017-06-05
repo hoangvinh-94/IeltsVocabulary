@@ -1,5 +1,9 @@
 package com.example.healer.ieltsvocabulary.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * Created by Healer on 23-May-17.
  */
