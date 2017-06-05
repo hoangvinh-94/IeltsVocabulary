@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 public class VocabularyController {
 
-    public IeltsProvider provider;
 
     public VocabularyController(){
-        provider = new IeltsProvider();
+
     }
 
-    public int loadNumOfWord(Context context, int id){
+    public static int loadNumOfWord(Context context, int id){
         int a = 0;
         Cursor c = context.getContentResolver().query(VocabularyBuiltUri.UnitEntry.CONTENT_URI,null, VocabularyBuiltUri.UnitEntry.COLUMN_ID +  "=" + id,null,null);
         c.moveToFirst();
@@ -32,10 +31,9 @@ public class VocabularyController {
         return a;
     }
 
-    public ArrayList<Vocabulary> loadDataByUnitId(Context context,int id){
+    public static ArrayList<Vocabulary> loadDataByUnitId(Context context,int id){
         ArrayList<Vocabulary>  vocabularies = new ArrayList<Vocabulary>();
         Uri avatarUri = VocabularyBuiltUri.VocabularyEntry.CONTENT_URI;
-        //Cursor c = myDataBase.rawQuery("SELECT * FROM VOCABULARY WHERE unitId = '"+id+"'", null);
         Cursor c = context.getContentResolver().query(avatarUri,null,VocabularyBuiltUri.VocabularyEntry.COLUMN_UNIT_ID + "=" + id,null,null);
         c.moveToFirst();
         while(c.isAfterLast() == false){

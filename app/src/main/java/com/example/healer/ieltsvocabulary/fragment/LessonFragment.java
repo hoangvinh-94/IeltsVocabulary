@@ -51,9 +51,8 @@ public class LessonFragment extends  Fragment {
 		myDataBase = myData.getMyDatabase();
 		list = new ArrayList<Vocabulary>();
 		final int id = getArguments().getInt("id");
-		VocabularyController VC = new VocabularyController();
-		int a = VC.loadNumOfWord(this.getActivity(),id);
-		list = VC.loadDataByUnitId(this.getActivity(),id);;
+		int a = VocabularyController.loadNumOfWord(this.getActivity(),id);
+		list = VocabularyController.loadDataByUnitId(this.getActivity(),id);;
 		int count = 0;
 		int j = 0;
 		final ArrayList<Lesson> lessons = new ArrayList<Lesson>();

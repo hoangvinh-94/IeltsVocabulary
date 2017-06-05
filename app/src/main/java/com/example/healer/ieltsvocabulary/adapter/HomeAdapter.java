@@ -1,91 +1,75 @@
 package com.example.healer.ieltsvocabulary.adapter;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 import com.example.healer.ieltsvocabulary.HomeActivity;
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.fragment.LessonFragment;
+import com.example.healer.ieltsvocabulary.model.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import android.app.Activity;;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 
-public class HomeAdapter extends CursorAdapter {
 
-	private static final int VIEW_TYPE_COUNT = 1;
-	private static final int VIEW_TYPE = 0;
+public class HomeAdapter extends ArrayAdapter<Unit> {
 
-	public static class ViewHolder {
-		public final ImageButton img;
+	ArrayList<Unit> arr = null;
+	Activity context;
+	int layoutId;
 
-		public ViewHolder(View view) {
-			img = (ImageButton) view.findViewById(R.id.img_unit);
-			//img.setImageBitmap(decodeFile(unit.getAvatar()));
+
+
+	public HomeAdapter(Activity context, int layoutId, ArrayList<Unit> list){
+		super(context,layoutId,list);
+		this.context = context;
+		this.layoutId = layoutId;
+		this.arr = list;
+
+	}
+
+	@Override
+	public View getView(final int position, View convertView, ViewGroup parent) {
+		// TODO Auto-generated method stub
+		if(convertView == null){
+			LayoutInflater inflater = context.getLayoutInflater();
+			convertView = inflater.inflate(layoutId, null);
 		}
-	}
-	// init HomeAdapter
-	public HomeAdapter(Context context, Cursor c, int flags) {
-		super(context, c, flags);
-	}
-
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		// Choose the layout type
-		int viewType = getItemViewType(cursor.getPosition());
-		int layoutId = -1;
-
-		layoutId = R.layout.custom_home;
-
-		View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
-
-		ViewHolder viewHolder = new ViewHolder(view);
-		view.setTag(viewHolder);
-
-		return view;
-	}
-
-	@Override
-	public void bindView(View view, final Context context, final Cursor cursor) {
-
-		ViewHolder viewHolder = (ViewHolder) view.getTag();
-		int viewType = getItemViewType(cursor.getPosition());
-		// Read date from cursor
-		String avatarUri = cursor.getString(HomeActivity.COL_AVATAR_URI);
-		viewHolder.img.setImageBitmap(decodeFile(context, avatarUri));
-		viewHolder.img.setOnClickListener(new View.OnClickListener() {
+		final Unit unit = arr.get(position);
+		ImageButton img = (ImageButton) convertView.findViewById(R.id.img_unit);
+		img.setImageBitmap(decodeFile(unit.getAvatar()));
+		img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				LessonFragment lf = LessonFragment.newInstance(position,unit.getId());
+				context.getFragmentManager().beginTransaction().replace(R.id.fragment_container,lf).addToBackStack(null).commit();
 
-				//Cursor cur = (Cursor) cursor.getPosition();
-				LessonFragment lf = LessonFragment.newInstance(cursor.getPosition(),cursor.getInt(HomeActivity.COL_UNIT_ID));
-				((Activity)context).getFragmentManager().beginTransaction().replace(R.id.fragment_container,lf).addToBackStack(null).commit();
+				//Toast.makeText(context,"asdfas",Toast.LENGTH_SHORT).show();
 			}
 		});
+		return convertView;
 	}
-
 	@Override
-	public int getItemViewType(int position) {
-		return VIEW_TYPE;
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return arr.size();
 	}
-
 	@Override
-	public int getViewTypeCount() {
-		return VIEW_TYPE_COUNT;
+	public long getItemId(int arg0) {
+		// TODO Auto-generated method stub
+		return arg0;
 	}
-
-	private Bitmap decodeFile(Context myContext,String f){
-		AssetManager mngr = myContext.getAssets();
+	// Decodes image and scales it to reduce memory consumption
+	private Bitmap decodeFile(String f){
+		AssetManager mngr = this.context.getAssets();
 		InputStream is = null;
 		try {
 			is = mngr.open(f);
@@ -102,5 +86,6 @@ public class HomeAdapter extends CursorAdapter {
 		o2.inSampleSize=8;
 		return BitmapFactory.decodeStream(is, null, o2);
 	}
+
 
 }
