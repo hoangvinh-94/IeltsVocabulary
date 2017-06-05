@@ -9,10 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,9 +32,13 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main,container,false);
+        ImageButton record = (ImageButton) rootView.findViewById(R.id.recordWord);
+        ImageButton listen = (ImageButton) rootView.findViewById(R.id.speakWord);
+        TextView word = (TextView) rootView.findViewById(R.id.engWord);
+        TextView mean = (TextView) rootView.findViewById(R.id.mean);
         Bundle bundle = getArguments();
         Vocabulary vocabulary = (Vocabulary) bundle.getSerializable("vocabulary");
-        Log.d("word1",vocabulary.getWord());
+        word.setText(vocabulary.getWord());
         return rootView;
     }
 
