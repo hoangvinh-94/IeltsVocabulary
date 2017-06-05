@@ -17,8 +17,15 @@ package com.example.healer.ieltsvocabulary.data;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import com.example.healer.ieltsvocabulary.model.Vocabulary;
+
+import java.util.ArrayList;
 
 /**
  * Defines table and column names for the weather database.
@@ -47,6 +54,7 @@ public class VocabularyBuiltUri {
         Students: This is where you will add the strings.  (Similar to what has been
         done for WeatherEntry)
      */
+
     public static final class UnitEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_UNIT).build();
@@ -63,7 +71,7 @@ public class VocabularyBuiltUri {
 
         public static final String TABLE_NAME = "UNIT";
 
-        public static final String TABLE_ID = "_id";
+        public static final String COLUMN_ID = "_id";
 
         public static final String COLUMN_NAME= "name";
 
@@ -133,21 +141,16 @@ public class VocabularyBuiltUri {
         public static final String COLUMN_WORD = "word";
         // Word id
         public static final String COLUMN_WORD_ID = "_id";
-
         // Phonenic of the word
         public static final String COLUMN_PHONIC = "phonetic";
-
         // Detail of word,
         public static final String COLUMN_DETAIL = "detail";
         //Short mean
         public static final String COLUMN_SHORT_MEAN = "shortMean";
-
         // Status
         public static final String COLUMN_STATUS = "status";
-
         // Important
         public static final String COLUMN_IMPORTANT = "important";
-
         // Audio of the word
         public static final String COLUMN_AUDIO_URI = "audioUri";
 

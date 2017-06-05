@@ -1,14 +1,17 @@
 package com.example.healer.ieltsvocabulary.fragment;
 
 import com.example.healer.ieltsvocabulary.R;
+import com.example.healer.ieltsvocabulary.controller.VocabularyController;
 import com.example.healer.ieltsvocabulary.data.LoadDataBaseSQLiteHelper;
 import com.example.healer.ieltsvocabulary.adapter.NumOfLessonAdapter;
+import com.example.healer.ieltsvocabulary.data.VocabularyBuiltUri;
 import com.example.healer.ieltsvocabulary.model.Lesson;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import android.app.Fragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +22,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import static com.example.healer.ieltsvocabulary.data.VocabularyBuiltUri.VocabularyEntry.COLUMN_UNIT_ID;
+
 public class LessonFragment extends  Fragment {
-	NumOfLessonAdapter lists = null;
-	LoadDataBaseSQLiteHelper myData = null;
-	SQLiteDatabase myDataBase = null;
-	ArrayList<Vocabulary> list = null;
-	int id;
 
 	// create New LessonFragment with possition and id Unit
 	public static LessonFragment newInstance(int pos, int id) {
@@ -41,15 +41,19 @@ public class LessonFragment extends  Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle BundlesavedInstanceState){
 		View rootView = inflater.inflate(R.layout.category_lesson,container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listLesson);
+		NumOfLessonAdapter lists = null;
+		LoadDataBaseSQLiteHelper myData = null;
+		SQLiteDatabase myDataBase = null;
+		ArrayList<Vocabulary> list = null;
+
 		myData = new LoadDataBaseSQLiteHelper(this.getActivity());
 		myData.open();
 		myDataBase = myData.getMyDatabase();
 		list = new ArrayList<Vocabulary>();
-		id = getArguments().getInt("id");
-		int a = loadId();
-		list = loadData();
-
-		Log.d("a",String.valueOf(a));
+		final int id = getArguments().getInt("id");
+		VocabularyController VC = new VocabularyController();
+		int a = VC.loadNumOfWord(this.getActivity(),id);
+		list = VC.loadDataByUnitId(this.getActivity(),id);;
 		int count = 0;
 		int j = 0;
 		ArrayList<Vocabulary> vocabularies = new ArrayList<>();
@@ -78,7 +82,8 @@ public class LessonFragment extends  Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(arg2).getLessonId(),id);
+
+				StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(arg2).getVocabularies(),id);
 				studyType.show(getActivity().getFragmentManager(),"");
 				
 			}
@@ -86,28 +91,4 @@ public class LessonFragment extends  Fragment {
 		});
 		return rootView;
 	}
-	public int loadId(){
-		int a = 0;
-		Cursor c = myDataBase.rawQuery("SELECT * FROM UNIT WHERE _id = '"+id+"'", null);
-		c.moveToFirst();
-		a = c.getInt(2);
-		c.close();
-		return a;
-	}
-	public ArrayList<Vocabulary> loadData(){
-		ArrayList<Vocabulary>  vocabularies = new ArrayList<Vocabulary>();
-		Cursor c = myDataBase.rawQuery("SELECT * FROM VOCABULARY WHERE unitId = '"+id+"'", null);
-		c.moveToFirst();
-		while(c.isAfterLast() == false){
-			vocabularies.add(new Vocabulary(c.getString(1).toString().trim()));
-			c.moveToNext();
-		}
-		c.close();
-		return vocabularies;
-	}
-	
-	
-	
-	
-	
 }

@@ -2,6 +2,8 @@ package com.example.healer.ieltsvocabulary.fragment;
 
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.LessonActivity;
+import com.example.healer.ieltsvocabulary.model.Vocabulary;
+
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -18,12 +20,13 @@ import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class StudyTypeDFragment extends DialogFragment implements OnClickListener {
 
-	public static StudyTypeDFragment newInstance(int idLesson, int idUnit) {
+	public static StudyTypeDFragment newInstance(ArrayList<Vocabulary> vocabularyLesson, int idUnit) {
 		Bundle args = new Bundle();
-		args.putInt("idLesson",idLesson);
+		//args.putInt("idLesson",idLesson);
 		args.putInt("idUnit",idUnit);
 		StudyTypeDFragment fragment = new StudyTypeDFragment();
 		fragment.setArguments(args);

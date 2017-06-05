@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 public class IeltsProvider extends ContentProvider {
@@ -48,15 +49,16 @@ public class IeltsProvider extends ContentProvider {
                 VocabularyBuiltUri.UnitEntry.TABLE_NAME + " INNER JOIN " +
                         VocabularyBuiltUri.VocabularyEntry.TABLE_NAME +
                         " ON " + VocabularyBuiltUri.UnitEntry.TABLE_NAME +
-                        "." + VocabularyBuiltUri.UnitEntry.TABLE_ID +
+                        "." + VocabularyBuiltUri.UnitEntry.COLUMN_ID +
                         " = " + VocabularyBuiltUri.VocabularyEntry.TABLE_NAME +
                         "." + VocabularyBuiltUri.VocabularyEntry.COLUMN_UNIT_ID);
     }
 
+
     //What Unit?
     private static final String sUnitSelection =
             VocabularyBuiltUri.UnitEntry.TABLE_NAME+
-                    "." + VocabularyBuiltUri.UnitEntry.TABLE_ID + " = ? ";
+                    "." + VocabularyBuiltUri.UnitEntry.COLUMN_ID + " = ? ";
     //vocabulary.audioUri = ?
     private static final String sVoccabularyAudio =
             VocabularyBuiltUri.VocabularyEntry.TABLE_NAME+
@@ -73,6 +75,9 @@ public class IeltsProvider extends ContentProvider {
 //            VocabularyBuiltUri.LocationEntry.TABLE_NAME +
 //                    "." + VocabularyBuiltUri.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
 //                    VocabularyBuiltUri.WeatherEntry.COLUMN_DATE + " = ? ";
+
+    public IeltsProvider(){
+    }
 
     private Cursor getVocabularyByUnitId(Uri uri, String[] projection, String sortOrder) {
         //String unitId = VocabularyBuiltUri.UnitEntry.getUnitIdFromUri(uri);
@@ -194,7 +199,7 @@ public class IeltsProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                        String sortOrder) {
+                               String sortOrder) {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;

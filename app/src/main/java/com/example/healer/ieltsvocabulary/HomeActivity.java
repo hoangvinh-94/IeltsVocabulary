@@ -13,22 +13,16 @@ import android.widget.ListView;
 
 import com.example.healer.ieltsvocabulary.adapter.HomeAdapter;
 import com.example.healer.ieltsvocabulary.data.VocabularyBuiltUri;
-import com.example.healer.ieltsvocabulary.model.Unit;
-
-import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    ArrayList<Unit> listUnit = null;
-
     private static final int FORECAST_LOADER = 0;
     private HomeAdapter mHomeAdapter;
-
     private GridView mGridView;
     private int mPosition = ListView.INVALID_POSITION;
     private static final String SELECTED_KEY = "selected_position";
     private static final String[] UNIT_COLUMNS = {
 
-            VocabularyBuiltUri.UnitEntry.TABLE_NAME + "." + VocabularyBuiltUri.UnitEntry.TABLE_ID,
+            VocabularyBuiltUri.UnitEntry.TABLE_NAME + "." + VocabularyBuiltUri.UnitEntry.COLUMN_ID,
             VocabularyBuiltUri.UnitEntry.COLUMN_NAME,
             VocabularyBuiltUri.UnitEntry.COLUMN_NUM_WORD,
             VocabularyBuiltUri.UnitEntry.COLUMN_AVATAR_URI

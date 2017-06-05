@@ -62,8 +62,6 @@ public class HomeAdapter extends CursorAdapter {
 		int viewType = getItemViewType(cursor.getPosition());
 		// Read date from cursor
 		String avatarUri = cursor.getString(HomeActivity.COL_AVATAR_URI);
-		Log.e("Avater Uri:", avatarUri);
-
 		viewHolder.img.setImageBitmap(decodeFile(context, avatarUri));
 		viewHolder.img.setOnClickListener(new View.OnClickListener() {
 			@Override
