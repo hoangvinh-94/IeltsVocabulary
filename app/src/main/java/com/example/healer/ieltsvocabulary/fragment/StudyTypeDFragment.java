@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class StudyTypeDFragment extends DialogFragment implements OnClickListener {
@@ -28,7 +30,8 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 	public static StudyTypeDFragment newInstance(ArrayList<Vocabulary> vocabularyLesson, int idUnit) {
 		Bundle args = new Bundle();
 		//args.putInt("idLesson",idLesson);
-		args.putParcelableArrayList("vocabularyLesson", (ArrayList<? extends Parcelable>) vocabularyLesson);
+		Log.d("dsafsdaf",String.valueOf(vocabularyLesson.size()));
+		args.putSerializable("vocabularyLesson",vocabularyLesson);
 		args.putInt("idUnit",idUnit);
 		StudyTypeDFragment fragment = new StudyTypeDFragment();
 		fragment.setArguments(args);
@@ -80,9 +83,11 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 		case R.id.imgStudy:{
 			Intent intent = new Intent(this.getActivity(),LessonActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putParcelableArrayList("vocabularyLesson", getArguments().getParcelableArrayList("vocabularyLesson"));
+
+			bundle.putSerializable("vocabularyLesson", getArguments().getSerializable("vocabularyLesson"));
+
 			bundle.putInt("idUnit", getArguments().getInt("idUnit"));
-			intent.putExtra("id",bundle);
+			intent.putExtra("dataLesson",bundle);
 			startActivity(intent);
 			Toast.makeText(getActivity(), "You clicked on Study Button", Toast.LENGTH_SHORT).show();
 			break;

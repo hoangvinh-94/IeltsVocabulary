@@ -8,7 +8,7 @@ import java.util.Objects;
  * Created by Healer on 23-May-17.
  */
 
-public class Vocabulary {
+public class Vocabulary implements Serializable {
     private int id;
     private String word;
     private String sound;

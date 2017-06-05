@@ -56,22 +56,24 @@ public class LessonFragment extends  Fragment {
 		list = VC.loadDataByUnitId(this.getActivity(),id);;
 		int count = 0;
 		int j = 0;
-		ArrayList<Vocabulary> vocabularies = new ArrayList<>();
 		final ArrayList<Lesson> lessons = new ArrayList<Lesson>();
+		ArrayList<Vocabulary> vocabularies = new ArrayList<Vocabulary>();
+
 		for(int i=0; i < a; i++){
 			vocabularies.add(new Vocabulary(list.get(i).getWord()));
+
 			count++;
 			if(count == 5){
-				lessons.add(new Lesson(j+1,"Lesson "+ (j+1),vocabularies));
+				lessons.add(new Lesson(j,"Lesson "+ (j+1),vocabularies));
 				count = 0;
 				j++;
-				vocabularies.clear();
+				vocabularies = new ArrayList<Vocabulary>();
 			}
 			else if(count == (a - (a/5)*5) && i >= ((a/5)*5) ){
-				lessons.add(new Lesson(j+1,"Lesson "+ (j+1),vocabularies));
+				lessons.add(new Lesson(j,"Lesson "+ (j+1),vocabularies));
 				count = 0;
 				j++;
-				vocabularies.clear();
+				vocabularies = new ArrayList<Vocabulary>();
 			}
 		}
 		lists = new NumOfLessonAdapter(this.getActivity(),R.layout.custom_numof_lesson,lessons);
@@ -79,13 +81,12 @@ public class LessonFragment extends  Fragment {
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
 
-				StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(arg2).getVocabularies(),id);
+				StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(position).getVocabularies(),id);
 				studyType.show(getActivity().getFragmentManager(),"");
-				
 			}
 			
 		});

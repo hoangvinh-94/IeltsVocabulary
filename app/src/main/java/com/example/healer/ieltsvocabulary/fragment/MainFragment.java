@@ -5,28 +5,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.healer.ieltsvocabulary.R;
+import com.example.healer.ieltsvocabulary.model.Vocabulary;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 
     public MainFragment() {
         // Required empty public constructor
-    }
-
-
-    // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -35,10 +30,8 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main,container,false);
         Bundle bundle = getArguments();
-        int pos = bundle.getInt("count");
-        Intent intent = getActivity().getIntent();
-        int idLesson = intent.getBundleExtra("id").getInt("idLesson");
-        int idUnit = intent.getBundleExtra("id").getInt("idUnit");
+        Vocabulary vocabulary = (Vocabulary) bundle.getSerializable("vocabulary");
+        Log.d("word1",vocabulary.getWord());
         return rootView;
     }
 
