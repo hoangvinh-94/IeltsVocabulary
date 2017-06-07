@@ -52,6 +52,7 @@ public class LessonFragment extends  Fragment {
 		list = new ArrayList<Vocabulary>();
 		final int id = getArguments().getInt("id");
 		int a = VocabularyController.loadNumOfWord(this.getActivity(),id);
+		Log.d("a",String.valueOf(a));
 		list = VocabularyController.loadDataByUnitId(this.getActivity(),id);;
 		int count = 0;
 		int j = 0;
@@ -59,7 +60,7 @@ public class LessonFragment extends  Fragment {
 		ArrayList<Vocabulary> vocabularies = new ArrayList<Vocabulary>();
 
 		for(int i=0; i < a; i++){
-			vocabularies.add(new Vocabulary(list.get(i).getWord()));
+			vocabularies.add(new Vocabulary(list.get(i).getWord(), list.get(i).getPhonetic(), list.get(i).getDetail()));
 
 			count++;
 			if(count == 5){

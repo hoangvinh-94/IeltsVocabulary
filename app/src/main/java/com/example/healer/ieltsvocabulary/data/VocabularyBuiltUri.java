@@ -46,8 +46,8 @@ public class VocabularyBuiltUri {
     // looking at weather data. content://com.example.android.sunshine.app/givemeroot/ will fail,
     // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
-    public static final String PATH_UNIT = "UNIT";
-    public static final String PATH_VOCABULARY = "VOCABULARY";
+    public static final String PATH_UNIT = "UNITS";
+    public static final String PATH_VOCABULARY = "VOCABULARYS";
 
     /*
         Inner class that defines the table contents of the location table
@@ -69,13 +69,13 @@ public class VocabularyBuiltUri {
         }
 
 
-        public static final String TABLE_NAME = "UNIT";
+        public static final String TABLE_NAME = "UNITS";
 
-        public static final String COLUMN_ID = "_id";
+        public static final String COLUMN_ID = "unitID";
 
         public static final String COLUMN_NAME= "name";
 
-        public static final String COLUMN_NUM_WORD= "numOfWord";
+        public static final String COLUMN_NUM_WORD= "numberOfWord";
 
         public static final String COLUMN_AVATAR_URI= "avatarUrl";
 
@@ -133,14 +133,14 @@ public class VocabularyBuiltUri {
 //        }
 
 
-        public static final String TABLE_NAME = "VOCABULARY";
+        public static final String TABLE_NAME = "VOCABULARYS";
 
         // Column with the foreign key into the unit table.
         public static final String COLUMN_UNIT_ID = "unitId";
         // Word
         public static final String COLUMN_WORD = "word";
         // Word id
-        public static final String COLUMN_WORD_ID = "_id";
+        public static final String COLUMN_WORD_ID = "vocabularyID";
         // Phonenic of the word
         public static final String COLUMN_PHONIC = "phonetic";
         // Detail of word,

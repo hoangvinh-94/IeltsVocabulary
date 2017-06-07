@@ -13,6 +13,7 @@ import android.app.Activity;;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class HomeAdapter extends ArrayAdapter<Unit> {
 		final Unit unit = arr.get(position);
 		ImageButton img = (ImageButton) convertView.findViewById(R.id.img_unit);
 		img.setImageBitmap(decodeFile(unit.getAvatar()));
+		Log.d("image 1",unit.getAvatar());
 		img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

@@ -18,7 +18,7 @@ public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 
 	private String DB_PATH = "com.example.healer.ieltsvocabulary";
 	//"/data/data/com.example.learnvocabulary/databases/";
-	private static String DB_NAME = "cambrige_vocabulary.db";
+	private static String DB_NAME = "IeltsVocabulary.db";
 
 	private Context context;
 	private SQLiteDatabase myDatabase;

@@ -28,9 +28,15 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<Unit> listUnit = null;
         listUnit = new ArrayList<Unit>();
         listUnit = UnitController.loadData(this);
+        //listUnit.add(new Unit(1,"asdfas",12,"images/category1.jpg"));
         homeAdapter = new HomeAdapter(this,R.layout.custom_home, listUnit);
         GridView gv = (GridView) findViewById(R.id.listUnit);
         gv.setAdapter(homeAdapter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.finish();
+    }
 }
