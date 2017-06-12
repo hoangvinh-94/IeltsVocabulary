@@ -47,7 +47,6 @@ public class HomeAdapter extends ArrayAdapter<Unit> {
 		final Unit unit = arr.get(position);
 		ImageButton img = (ImageButton) convertView.findViewById(R.id.img_unit);
 		img.setImageBitmap(decodeFile(unit.getAvatar()));
-		Log.d("image 1",unit.getAvatar());
 		img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

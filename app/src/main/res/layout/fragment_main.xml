@@ -71,6 +71,7 @@ android:orientation="vertical">
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
+                android:textAlignment="center"
                 android:text="từ bỏ"
                 android:textColor="#1E90FF"
                 android:textSize="20dp" />

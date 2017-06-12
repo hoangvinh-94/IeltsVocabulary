@@ -20,6 +20,7 @@ import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import org.w3c.dom.Text;
 
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -51,9 +52,13 @@ public class MainFragment extends Fragment {
         final Vocabulary vocabulary = (Vocabulary) bundle.getSerializable("vocabulary");
         word.setText(vocabulary.getWord());
         String s = new String(vocabulary.getPhonetic());
-        phonetic.setText("/"+s+"/");
-        s = new String(vocabulary.getDetail());
+        phonetic.setText(""+s+"");
+        s = new String(vocabulary.getMean());
         mean.setText(s);
+
+
+
+
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

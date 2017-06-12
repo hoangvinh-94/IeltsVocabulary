@@ -32,10 +32,11 @@ public class IeltsProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private LoadDataBaseSQLiteHelper mOpenHelper;
     private SQLiteDatabase myDatabase;
-    static final int UNIT = 100;
-    static final int UNIT_ID = 105;
-    static final int VOCABULARY = 101;
-    static final int VOCABULARY_AUDIO = 102;
+    static final int UNIT = 1;
+    static final int UNIT_ID = 2;
+    static final int VOCABULARY = 3;
+    static final int VOCABULARY_AUDIO = 4;
+    static final int VOCABULARY_MEAN = 5;
    // static final int VOCABULARY_AUDIO = 103;
 
     private static final SQLiteQueryBuilder sVocabuaryInUnitQueryBuilder;
@@ -118,21 +119,6 @@ public class IeltsProvider extends ContentProvider {
         );
      }
 
-//    private Cursor getWeatherByLocationSettingAndDate(
-//            Uri uri, String[] projection, String sortOrder) {
-//        String locationSetting = VocabularyBuiltUri.WeatherEntry.getLocationSettingFromUri(uri);
-//        long date = VocabularyBuiltUri.WeatherEntry.getDateFromUri(uri);
-//
-//        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-//                projection,
-//                sLocationSettingAndDaySelection,
-//                new String[]{locationSetting, Long.toString(date)},
-//                null,
-//                null,
-//                sortOrder
-//        );
-   // }
-
     /*
         Students: Here is where you need to create the UriMatcher. This UriMatcher will
         match each URI to the WEATHER, WEATHER_WITH_LOCATION, WEATHER_WITH_LOCATION_AND_DATE,
@@ -197,6 +183,8 @@ public class IeltsProvider extends ContentProvider {
         }
     }
 
+
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                                String sortOrder) {
@@ -204,13 +192,6 @@ public class IeltsProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-//            // "weather/*/*"
-//            case WEATHER_WITH_LOCATION_AND_DATE:
-//            {
-//                retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
-//                break;
-//            }
-            // "weather/*"
             case VOCABULARY_AUDIO: {
                 retCursor = getVocabularyAudiUri(uri, projection, sortOrder);
                 break;
@@ -237,6 +218,14 @@ public class IeltsProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
+                break;
+            }
+            case VOCABULARY_MEAN:{
+                retCursor = myDatabase.rawQuery("select distinct VOCABULARYS.word, WORDTYPE.type, MEANS.mean, CONTEXTS.name\n" +
+                        "from VOCABULARYS, WORDTYPE, VOCA_TYPE, VOCABULARY_IN_CONTEXT, MEANS, CONTEXTS, EXAMPLES\n" +
+                        "where VOCABULARYS.vocabularyID = VOCA_TYPE.vocabularyID and VOCABULARY_IN_CONTEXT.contextID = CONTEXTS.contextID\n" +
+                        "and VOCA_TYPE.wordTypeID = WORDTYPE.wordTypeID and WORDTYPE.wordTypeID = VOCABULARY_IN_CONTEXT.vocaTypeID \n" +
+                        "and VOCABULARY_IN_CONTEXT.vicID = MEANS.vicID ", null);
                 break;
             }
 

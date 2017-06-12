@@ -2,9 +2,11 @@ package com.example.healer.ieltsvocabulary.controller;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.example.healer.ieltsvocabulary.data.IeltsProvider;
+import com.example.healer.ieltsvocabulary.data.LoadDataBaseSQLiteHelper;
 import com.example.healer.ieltsvocabulary.data.VocabularyBuiltUri;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 import android.os.Bundle;
@@ -25,13 +27,16 @@ import java.util.ArrayList;
  */
 
 public class VocabularyController {
+    private LoadDataBaseSQLiteHelper mOpenHelper;
+    private SQLiteDatabase db;
 
-
-    public VocabularyController(){
-
+    public VocabularyController(Context context){
+        mOpenHelper = new LoadDataBaseSQLiteHelper(context);
+        mOpenHelper.open();
+        db = mOpenHelper.getMyDatabase();
     }
 
-    public static int loadNumOfWord(Context context, int id){
+    public int loadNumOfWord(Context context, int id){
         Log.d("id",String.valueOf(id));
         int a = 0;
         Cursor c = context.getContentResolver().query(VocabularyBuiltUri.UnitEntry.CONTENT_URI,null, VocabularyBuiltUri.UnitEntry.COLUMN_ID +  "=" + id,null,null);
@@ -41,50 +46,20 @@ public class VocabularyController {
         return a;
     }
 
-    public static ArrayList<Vocabulary> loadDataByUnitId(Context context,int id){
-        ArrayList<Vocabulary>  vocabularies = new ArrayList<Vocabulary>();
-        Uri avatarUri = VocabularyBuiltUri.VocabularyEntry.CONTENT_URI;
-        Cursor c = context.getContentResolver().query(avatarUri,null,VocabularyBuiltUri.VocabularyEntry.COLUMN_UNIT_ID + "=" + id,null,null);
+    public  ArrayList<Vocabulary> loadDataByUnitId(int id) {
+        ArrayList<Vocabulary> vocabularies = new ArrayList<Vocabulary>();
+        String query = "select distinct VOCABULARYS.word, VOCABULARYS.phonetic, WORDTYPE.type, MEANS.mean \n" +
+                "from MEANS,  VOCABULARY_IN_CONTEXT, VOCA_TYPE, WORDTYPE, VOCABULARYS\n" +
+                "where MEANS.vicID = VOCABULARY_IN_CONTEXT.vicID and VOCA_TYPE.id =  VOCABULARY_IN_CONTEXT.vocaTypeID\n" +
+                "and VOCA_TYPE.wordTypeID = WORDTYPE.wordTypeID and VOCABULARYS.vocabularyID = VOCA_TYPE.vocabularyID and  VOCABULARYS.unitId = '" + id + "' ";
+
+        Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-        while(c.isAfterLast() == false){
-            vocabularies.add(new Vocabulary(c.getString(1).toString().trim(),c.getBlob(2),c.getBlob(3)));
+        while (c.isAfterLast() == false) {
+            vocabularies.add(new Vocabulary(c.getString(0), c.getString(1).toString().trim(), c.getString(2).toString().trim(), c.getString(3).toString().trim()));
             c.moveToNext();
         }
         c.close();
         return vocabularies;
-
     }
-    public static byte[] convertBlob(Blob blob) {
-        if(blob==null)return null;
-        try {
-            InputStream in = blob.getBinaryStream();
-            int len = (int) blob.length(); //read as long
-            long pos = 1; //indexing starts from 1
-            byte[] bytes = blob.getBytes(pos, len);
-            in.close();
-            return bytes;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
-    private static byte[] readFile(String file) {
-        ByteArrayOutputStream bos = null;
-        try {
-            File f = new File(file);
-            FileInputStream fis = new FileInputStream(f);
-            byte[] buffer = new byte[1024];
-            bos = new ByteArrayOutputStream();
-            for (int len; (len = fis.read(buffer)) != -1;) {
-                bos.write(buffer, 0, len);
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
-        } catch (IOException e2) {
-            System.err.println(e2.getMessage());
-        }
-        return bos != null ? bos.toByteArray() : null;
-    }
-
 }

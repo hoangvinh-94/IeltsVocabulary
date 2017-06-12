@@ -6,7 +6,6 @@ import android.net.Uri;
 
 import com.example.healer.ieltsvocabulary.data.VocabularyBuiltUri;
 import com.example.healer.ieltsvocabulary.model.Unit;
-import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import java.util.ArrayList;
 
@@ -34,4 +33,6 @@ public class UnitController {
         return units;
 
     }
+
+
 }

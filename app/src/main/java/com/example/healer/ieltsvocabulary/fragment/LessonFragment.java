@@ -42,40 +42,39 @@ public class LessonFragment extends  Fragment {
 		View rootView = inflater.inflate(R.layout.category_lesson,container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listLesson);
 		NumOfLessonAdapter lists = null;
-		LoadDataBaseSQLiteHelper myData = null;
-		SQLiteDatabase myDataBase = null;
 		ArrayList<Vocabulary> list = null;
-
-		myData = new LoadDataBaseSQLiteHelper(this.getActivity());
-		myData.open();
-		myDataBase = myData.getMyDatabase();
+		VocabularyController VC = new VocabularyController(this.getActivity());
 		list = new ArrayList<Vocabulary>();
 		final int id = getArguments().getInt("id");
-		int a = VocabularyController.loadNumOfWord(this.getActivity(),id);
-		Log.d("a",String.valueOf(a));
-		list = VocabularyController.loadDataByUnitId(this.getActivity(),id);;
+		Log.d("ID",String.valueOf(id));
+		//int a = VC.loadNumOfWord(this.getActivity(),id);
+		int a = 5;
+		list = VC.loadDataByUnitId(id);
+		Log.d("count", String.valueOf(list.size()));
+
 		int count = 0;
 		int j = 0;
 		final ArrayList<Lesson> lessons = new ArrayList<Lesson>();
 		ArrayList<Vocabulary> vocabularies = new ArrayList<Vocabulary>();
 
-		for(int i=0; i < a; i++){
-			vocabularies.add(new Vocabulary(list.get(i).getWord(), list.get(i).getPhonetic(), list.get(i).getDetail()));
-
+		for(int i=0; i < a; i++) {
+			vocabularies.add(new Vocabulary(list.get(i).getWord(), list.get(i).getPhonetic(), list.get(i).getType(), list.get(i).getMean()));
 			count++;
-			if(count == 5){
-				lessons.add(new Lesson(j,"Lesson "+ (j+1),vocabularies));
+			if (count == 5) {
+				lessons.add(new Lesson(j, "Lesson " + (j + 1), vocabularies));
+				count = 0;
+				j++;
+				vocabularies = new ArrayList<Vocabulary>();
+			} else if (count == (a - (a / 5) * 5) && i >= ((a / 5) * 5)) {
+				// Log.d("vinh",String.valueOf(a));
+				lessons.add(new Lesson(j, "Lesson " + (j + 1), vocabularies));
 				count = 0;
 				j++;
 				vocabularies = new ArrayList<Vocabulary>();
 			}
-			else if(count == (a - (a/5)*5) && i >= ((a/5)*5) ){
-				lessons.add(new Lesson(j,"Lesson "+ (j+1),vocabularies));
-				count = 0;
-				j++;
-				vocabularies = new ArrayList<Vocabulary>();
-			}
+
 		}
+
 		lists = new NumOfLessonAdapter(this.getActivity(),R.layout.custom_numof_lesson,lessons);
 		listView.setAdapter(lists);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

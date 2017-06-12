@@ -12,31 +12,39 @@ import java.util.Objects;
 public class Vocabulary implements Serializable {
     private int id;
     private String word;
+    private String type;
     private String sound;
-    private byte[] phonetic;
-    private byte[] detail;
+    private String phonetic;
+    private String mean;
 
-    public Vocabulary(String word, byte[] phonetic, byte[] detail) {
+
+    public Vocabulary(String word, String phonetic,String type, String mean) {
         this.word = word;
         this.phonetic = phonetic;
-        this.detail = detail;
+        this.mean = mean;
+        this.type = type;
     }
+
 
     public int getId() {
         return id;
     }
 
-    public byte[] getPhonetic(){
+    public String getPhonetic(){
         return phonetic;
     }
-    public byte[] getDetail(){
-        return detail;
+    public String getMean(){
+        return mean;
     }
     public void setId(int id) {
         this.id = id;
     }
     public String getWord() {
         return word;
+    }
+
+    public String getType(){
+        return type;
     }
 
     public void setWord(String word) {
