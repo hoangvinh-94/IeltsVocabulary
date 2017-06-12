@@ -16,20 +16,29 @@ public class Vocabulary implements Serializable {
     private String sound;
     private String phonetic;
     private String mean;
+    private String signature;
+    private int wordTypeId;
 
 
-    public Vocabulary(String word, String phonetic,String type, String mean) {
+    public Vocabulary(int id, String word, String phonetic, String type, String signature,int wordTypeId, String mean) {
+        this.id = id;
         this.word = word;
         this.phonetic = phonetic;
         this.mean = mean;
         this.type = type;
+        this.signature = signature;
+        this.wordTypeId = wordTypeId;
     }
 
-
+    public int getWordTypeId(){
+        return wordTypeId;
+    }
     public int getId() {
         return id;
     }
-
+    public String getSignature(){
+        return signature;
+    }
     public String getPhonetic(){
         return phonetic;
     }

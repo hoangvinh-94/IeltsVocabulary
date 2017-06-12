@@ -42,23 +42,23 @@ public class LessonFragment extends  Fragment {
 		View rootView = inflater.inflate(R.layout.category_lesson,container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listLesson);
 		NumOfLessonAdapter lists = null;
-		ArrayList<Vocabulary> list = null;
+		ArrayList<Vocabulary> list = new ArrayList<Vocabulary>();
 		VocabularyController VC = new VocabularyController(this.getActivity());
-		list = new ArrayList<Vocabulary>();
+
+
 		final int id = getArguments().getInt("id");
-		Log.d("ID",String.valueOf(id));
+		Log.d("ID", String.valueOf(id));
 		//int a = VC.loadNumOfWord(this.getActivity(),id);
 		int a = 5;
 		list = VC.loadDataByUnitId(id);
-		Log.d("count", String.valueOf(list.size()));
-
+		Log.d("sadfas", String.valueOf(list.size()));
 		int count = 0;
 		int j = 0;
 		final ArrayList<Lesson> lessons = new ArrayList<Lesson>();
 		ArrayList<Vocabulary> vocabularies = new ArrayList<Vocabulary>();
 
 		for(int i=0; i < a; i++) {
-			vocabularies.add(new Vocabulary(list.get(i).getWord(), list.get(i).getPhonetic(), list.get(i).getType(), list.get(i).getMean()));
+			vocabularies.add(new Vocabulary(list.get(i).getId(),list.get(i).getWord(), list.get(i).getPhonetic(), list.get(i).getType(), list.get(i).getSignature(),list.get(i).getWordTypeId(), list.get(i).getMean()));
 			count++;
 			if (count == 5) {
 				lessons.add(new Lesson(j, "Lesson " + (j + 1), vocabularies));
@@ -87,7 +87,7 @@ public class LessonFragment extends  Fragment {
 				StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(position).getVocabularies(),id);
 				studyType.show(getActivity().getFragmentManager(),"");
 			}
-			
+
 		});
 		return rootView;
 	}
