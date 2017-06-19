@@ -56,16 +56,31 @@ android:orientation="vertical">
         android:textAlignment="center"
         android:textColor="#FF0000"
         android:textSize="20dp" />
-    <TextView
-        android:id="@+id/mean"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:textAlignment="center"
-        android:text="từ bỏ"
-        android:textColor="#1E90FF"
-        android:textSize="20dp" />
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/volume"
+            android:layout_weight="0.4"/>
+        <TextView
+            android:id="@+id/mean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:text="từ bỏ"
+            android:textColor="#1E90FF"
+            android:textSize="20dp"
+            android:layout_weight="0.6"/>
+
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"

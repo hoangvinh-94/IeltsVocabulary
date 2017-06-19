@@ -1,6 +1,7 @@
 package com.example.healer.ieltsvocabulary.data;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 
@@ -22,6 +24,10 @@ public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 
 	private Context context;
 	private SQLiteDatabase myDatabase;
+
+
+
+
 	public LoadDataBaseSQLiteHelper(Context context){
 		super(context, DB_NAME, null, 1);
 
