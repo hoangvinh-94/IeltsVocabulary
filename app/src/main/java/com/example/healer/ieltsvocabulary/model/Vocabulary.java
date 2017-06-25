@@ -1,9 +1,12 @@
 package com.example.healer.ieltsvocabulary.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by Healer on 23-May-17.
@@ -11,60 +14,61 @@ import java.util.Objects;
 
 public class Vocabulary implements Serializable {
     private int id;
+    private int unitId;
     private String word;
-    private String type;
-    private String sound;
     private String phonetic;
-    private String mean;
-    private String signature;
-    private int wordTypeId;
+    private byte[] image;
 
+    public Vocabulary(){
 
-    public Vocabulary(int id, String word, String phonetic, String type, String signature,int wordTypeId, String mean) {
+    }
+
+    public Vocabulary(int id, String word, String phonetic, int unitId, byte[] image) {
         this.id = id;
         this.word = word;
         this.phonetic = phonetic;
-        this.mean = mean;
-        this.type = type;
-        this.signature = signature;
-        this.wordTypeId = wordTypeId;
+        this.unitId = unitId;
+        this.image = image;
     }
 
-    public int getWordTypeId(){
-        return wordTypeId;
+    public int getUnitId() {
+        return unitId;
     }
+
+    public void setUnitId(int unitId) {
+        this.unitId = unitId;
+    }
+
     public int getId() {
         return id;
     }
-    public String getSignature(){
-        return signature;
-    }
-    public String getPhonetic(){
-        return phonetic;
-    }
-    public String getMean(){
-        return mean;
-    }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getWord() {
         return word;
-    }
-
-    public String getType(){
-        return type;
     }
 
     public void setWord(String word) {
         this.word = word;
     }
 
-    public String getSound() {
-        return sound;
+    public String getPhonetic() {
+        return phonetic;
     }
 
-    public void setSound(String sound) {
-        this.sound = sound;
+    public void setPhonetic(String phonetic) {
+        this.phonetic = phonetic;
+    }
+
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

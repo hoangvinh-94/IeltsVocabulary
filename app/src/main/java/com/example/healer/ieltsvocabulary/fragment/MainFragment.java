@@ -11,19 +11,34 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.healer.ieltsvocabulary.R;
+import com.example.healer.ieltsvocabulary.controller.ExampleController;
+import com.example.healer.ieltsvocabulary.controller.ImageController;
+import com.example.healer.ieltsvocabulary.controller.MeanController;
+import com.example.healer.ieltsvocabulary.controller.SynonymousController;
+import com.example.healer.ieltsvocabulary.controller.UnsynonymousController;
 import com.example.healer.ieltsvocabulary.controller.VocabularyController;
+import com.example.healer.ieltsvocabulary.controller.WordFormController;
+import com.example.healer.ieltsvocabulary.controller.WordTypeController;
+import com.example.healer.ieltsvocabulary.model.Example;
+import com.example.healer.ieltsvocabulary.model.Mean;
+import com.example.healer.ieltsvocabulary.model.Synonymous;
+import com.example.healer.ieltsvocabulary.model.Unsynonymous;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
+import com.example.healer.ieltsvocabulary.model.WordForm;
+import com.example.healer.ieltsvocabulary.model.WordType;
 
 import org.w3c.dom.Text;
 
@@ -55,6 +70,7 @@ public class MainFragment extends Fragment {
 
         ImageButton record = (ImageButton) rootView.findViewById(R.id.recordWord);
         ImageButton listen = (ImageButton) rootView.findViewById(R.id.speakWord);
+        ImageView image = (ImageView) rootView.findViewById(R.id.imageWord);
         TextView word = (TextView) rootView.findViewById(R.id.engWord);
         TextView mean = (TextView) rootView.findViewById(R.id.mean);
         TextView phonetic = (TextView) rootView.findViewById(R.id.phonetic);
@@ -62,27 +78,51 @@ public class MainFragment extends Fragment {
 
         Bundle bundle = getArguments();
         final Vocabulary vocabulary = (Vocabulary) bundle.getSerializable("vocabulary");
+        // get data by id
+        ArrayList<WordType> wordTypes = (new WordTypeController(this.getContext()).getTypeByVocabularyId(vocabulary.getId()));
+        ArrayList<Mean> means = (new MeanController(this.getContext()).getMeanById(vocabulary.getId()));
+        ArrayList<Example> examples = (new ExampleController(this.getContext()).getExampleById(vocabulary.getId()));
+        Synonymous synonymouses = (new SynonymousController(this.getContext()).getSynonymousById(vocabulary.getId()));
+        Unsynonymous unsynonymouses = (new UnsynonymousController(this.getContext()).getUnsynonymousById(vocabulary.getId()));
+        ArrayList<WordForm> wordforms = (new WordFormController(this.getContext()).getWordFormById(vocabulary.getId()));
 
-        word.setText(vocabulary.getWord()+ " "+vocabulary.getSignature());
+        word.setText(vocabulary.getWord()+ " "+wordTypes.get(0).getSignature());
         phonetic.setText(vocabulary.getPhonetic());
-        mean.setText(vocabulary.getMean());
-        String synonyms;
-        synonyms = VC.getSynonym(vocabulary.getId());
-        String unsynonyms;
-        unsynonyms = VC.getUnsynonym(vocabulary.getId());
-        ArrayList<String> examples = new ArrayList<String>();
-        ArrayList<Vocabulary> list = new ArrayList<Vocabulary>();
-        list = VC.getWordType(vocabulary.getId(),vocabulary.getWordTypeId());
-        examples = VC.getExample(vocabulary.getId());
-
+        ImageController ic = new ImageController(this.getActivity());
+        //image.setImageBitmap(ic.loadImage(vocabulary.getImage()));
+        //image.setImageBitmap(ic.loadImg());
+        //Log.d("image",vocabulary.getImage().toString());
+        mean.setText(means.get(0).getMean());
         LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.layout);
 
-       // LinearLayout layout = new LinearLayout(this.getActivity());
-        //layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        //layout.setOrientation(LinearLayout.VERTICAL);
+        // Display word type another
+
+        for(int i=1; i<wordTypes.size();i++){
+            TextView txtTitle = new TextView(this.getActivity());
+            txtTitle.setText(vocabulary.getWord()+wordTypes.get(i).getSignature()+":");
+            txtTitle.setId(View.generateViewId());
+            txtTitle.setTextColor(Color.BLACK);
+            txtTitle.setTextSize(20);
+            txtTitle.setTypeface(null, Typeface.BOLD);
+            txtTitle.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            layout.addView(txtTitle);
+
+            TextView txtContent = new TextView(this.getActivity());
+            txtContent.setText(means.get(i).getMean());
+            txtTitle.setId(View.generateViewId());
+            txtContent.setTextColor(Color.BLACK);
+            txtContent.setTextSize(18);
+            txtContent.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            layout.addView(txtContent);
+        }
 
         // Display example
-        if(examples.size() > 0){
+        if(examples.size() > 0) {
             TextView txtTitle = new TextView(this.getActivity());
             txtTitle.setText("Examples:");
             txtTitle.setId(View.generateViewId());
@@ -94,39 +134,9 @@ public class MainFragment extends Fragment {
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             layout.addView(txtTitle);
 
-            for(int i=0; i< examples.size(); i++){
+            for (int i = 0; i < examples.size(); i++) {
                 TextView txtContent = new TextView(this.getActivity());
-            txtContent.setText("\u25BA "+examples.get(i));
-            txtTitle.setId(View.generateViewId());
-            txtContent.setTextColor(Color.BLACK);
-            txtContent.setTextSize(18);
-            txtContent.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            layout.addView(txtContent);
-        }
-
-        }
-        // Display word type another
-
-        if(list.size()>0){
-
-            for(int i = 0;i < list.size(); i ++){
-                TextView txtTitle = new TextView(this.getActivity());
-
-                txtTitle.setText(list.get(i).getWord()+list.get(i).getSignature()+":");
-                txtTitle.setId(View.generateViewId());
-                txtTitle.setTextColor(Color.BLACK);
-                txtTitle.setTextSize(20);
-                txtTitle.setTypeface(null, Typeface.BOLD);
-                txtTitle.setLayoutParams(new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                layout.addView(txtTitle);
-
-                TextView txtContent = new TextView(this.getActivity());
-                txtContent.setText(list.get(i).getMean());
+                txtContent.setText("\u25BA " + examples.get(i).getEngSentence());
                 txtTitle.setId(View.generateViewId());
                 txtContent.setTextColor(Color.BLACK);
                 txtContent.setTextSize(18);
@@ -135,12 +145,10 @@ public class MainFragment extends Fragment {
                         ViewGroup.LayoutParams.WRAP_CONTENT));
 
                 layout.addView(txtContent);
-
             }
         }
-
-        //Display word anonyms
-        if(!synonyms.isEmpty()) {
+        //Display word synonyms
+        if(!synonymouses.getWord().isEmpty()) {
             TextView txtTitle = new TextView(this.getActivity());
             txtTitle.setText("Synonyms:");
             txtTitle.setId(View.generateViewId());
@@ -154,7 +162,7 @@ public class MainFragment extends Fragment {
 
 
               TextView txtContent = new TextView(this.getActivity());
-            txtContent.setText(synonyms);
+            txtContent.setText(synonymouses.getWord());
             txtTitle.setId(View.generateViewId());
             txtContent.setTextColor(Color.BLACK);
             txtContent.setTextSize(18);
@@ -167,8 +175,8 @@ public class MainFragment extends Fragment {
            // scrollView.addView(layout);
         }
 
-        //Display word unanonyms
-        if(!unsynonyms.isEmpty()) {
+        //Display word unsynonyms
+        if(unsynonymouses != null) {
             TextView txtTitle = new TextView(this.getActivity());
             txtTitle.setText("Unsynonyms:");
             txtTitle.setId(View.generateViewId());
@@ -182,7 +190,30 @@ public class MainFragment extends Fragment {
 
 
             TextView txtContent = new TextView(this.getActivity());
-            txtContent.setText(unsynonyms);
+            txtContent.setText(unsynonymouses.getWord());
+            txtTitle.setId(View.generateViewId());
+            txtContent.setTextColor(Color.BLACK);
+            txtContent.setTextSize(18);
+            txtContent.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            layout.addView(txtContent);
+        }
+        if(wordforms.size() > 0){
+            TextView txtTitle = new TextView(this.getActivity());
+            txtTitle.setText("WordForm:");
+            txtTitle.setId(View.generateViewId());
+            txtTitle.setTextColor(Color.BLACK);
+            txtTitle.setTextSize(20);
+            txtTitle.setTypeface(null, Typeface.BOLD);
+            txtTitle.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            layout.addView(txtTitle);
+            String result = coverArrayToString(wordforms);
+            TextView txtContent = new TextView(this.getActivity());
+            txtContent.setText(result.toString());
             txtTitle.setId(View.generateViewId());
             txtContent.setTextColor(Color.BLACK);
             txtContent.setTextSize(18);
@@ -193,10 +224,6 @@ public class MainFragment extends Fragment {
             layout.addView(txtContent);
         }
 
-
-
-
-
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,17 +233,28 @@ public class MainFragment extends Fragment {
         listen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(vocabulary.getSound() == ""){
-                    Toast.makeText(getActivity().getApplicationContext(),"No found file sound",Toast.LENGTH_SHORT).show();
-                }
-                else{
 
-                }
             }
         });
         return rootView;
     }
 
+    public String coverArrayToString(ArrayList<WordForm> A){
+        String str ="";
+        for(int i=0; i < A.size(); i++){
+            if(i == A.size() - 1){
+                if(A.get(i).getWord() != null) {
+                    str += A.get(i).getWord();
+                }
+            }
+            else{
+                if(A.get(i).getWord() != null) {
+                    str += A.get(i).getWord() + " , ";
+                }
+            }
+        }
+        return str;
+    }
 
     private void promptSpeechInputStudy() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

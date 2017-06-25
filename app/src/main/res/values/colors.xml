@@ -3,4 +3,28 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#cccccc</color>
+    <color name="background_test">#f9fbf8</color>
+    <color name="grey_700">#646464</color>
+    <color name="black">#000000</color>
+
+    <color name="test_light_blue">#ff64c2f4</color>
+    <color name="test_blue">#ff1ca8f4</color>
+    <color name="test_dark_blue">#0288D1</color>
+
+    <color name="test_trac_nghiem">#eaf0e9</color>
+    <color name="test_check">#2f760b</color>
+    <color name="test_check_press">#badbaa</color>
+
+    <color name="test_watch_video">#FE9A2E</color>
+    <color name="sunshine_light_blue">#ff64c2f4</color>
+    <color name="sunshine_blue">#ff1ca8f4</color>
+    <color name="sunshine_dark_blue">#0288D1</color>
+
+    <color name="button_pressed">#ff8a00</color>
+    <color name="button_focused">#ff8a00</color>
+    <color name="button_default">#0c436e</color>
+
 </resources>

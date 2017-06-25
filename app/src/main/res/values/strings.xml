@@ -3,4 +3,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="meaning_test_1">Choose the meaning of the word</string>
+    <string name="test_unit">Choose the correct answer:</string>
+    <string name="listening_test">Write the word you hear</string>
+    <string name="meaning_by_listening_test">Listen and choose the correct meaning</string>
+    <string name="check">CHECK</string>
+    <string name="word_by_meaning">Choose the word of below meaning</string>
 </resources>

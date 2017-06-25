@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<animation-list
+    android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/game_background1"
+        android:duration="250">
+    </item>
+    <item
+        android:drawable="@drawable/game_background2"
+        android:duration="250">
+    </item>
+    <item
+        android:drawable="@drawable/game_background3"
+        android:duration="250">
+    </item>
+    <item
+        android:drawable="@drawable/game_background4"
+        android:duration="250">
+    </item>
+    <item
+        android:drawable="@drawable/game_background5"
+        android:duration="250">
+    </item>
+
+</animation-list>

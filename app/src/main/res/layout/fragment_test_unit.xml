@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.healer.ieltsvocabulary.fragment.TestUnitFragment"
+    >
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Healthy"
+            android:textStyle="bold"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/button_pressed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lesson 1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/button_default"
+            android:typeface="monospace" />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingTop="0dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textStyle="normal"
+        android:text="@string/test_unit"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="I have a very close relationship ... education and academy success."
+            android:textAlignment="center"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/colorPrimaryDark" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/test_compare_word1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="about"
+            android:textAllCaps="false"
+            android:padding="8dp"
+            android:textColor="@color/sunshine_blue"
+            android:background="@drawable/my_btn_bg"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+
+        <Button
+            android:id="@+id/test_compare_word2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="between"
+            android:textAllCaps="false"
+            android:textColor="@color/sunshine_blue"
+            android:background="@drawable/my_btn_bg"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+        <Button
+            android:id="@+id/test_compare_word3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="for"
+            android:textAllCaps="false"
+            android:textColor="@color/sunshine_blue"
+            android:background="@drawable/my_btn_bg"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+
+        <Button
+            android:id="@+id/test_compare_word4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="in"
+            android:textAllCaps="false"
+            android:textColor="@color/sunshine_blue"
+            android:background="@drawable/my_btn_bg"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningFragment_1"
+    >
+<!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Healthy"
+            android:textStyle="bold"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/button_pressed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lesson 1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/button_default"
+            android:typeface="monospace" />
+
+    </LinearLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:textAppearanceMedium"
+    android:fontFamily="sans-serif-condensed"
+    android:paddingLeft="16dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp"
+    android:text="@string/meaning_test_1"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:layout_marginBottom="16dp"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/tracnghiem_word_Btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="16dp"
+        android:onClick="doTextToVoiceTest"
+        android:background="@drawable/volumn_selector"
+        />
+
+    <TextView
+        android:id="@+id/test_meaning_vocabulary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/black"
+        android:text="Consumerism"/>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/test_compare_word1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Spend money"
+        android:padding="8dp"
+        style="@style/ButtonQuiz"
+        />
+
+    <Button
+        android:id="@+id/test_compare_word2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buy something"
+        style="@style/ButtonQuiz"
+        />
+    <Button
+        android:id="@+id/test_compare_word3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sell things"
+        style="@style/ButtonQuiz"
+        />
+
+    <Button
+        android:id="@+id/test_compare_word4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giving something to someone"
+        style="@style/ButtonQuiz"
+        />
+
+</LinearLayout>
+
+</LinearLayout>

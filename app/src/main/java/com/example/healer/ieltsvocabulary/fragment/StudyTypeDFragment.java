@@ -2,6 +2,8 @@ package com.example.healer.ieltsvocabulary.fragment;
 
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.LessonActivity;
+import com.example.healer.ieltsvocabulary.TestLessonActivity;
+import com.example.healer.ieltsvocabulary.game.GameActivity;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import android.annotation.SuppressLint;
@@ -27,14 +29,11 @@ import java.util.ArrayList;
 
 public class StudyTypeDFragment extends DialogFragment implements OnClickListener {
 
-	public static StudyTypeDFragment newInstance(ArrayList<Vocabulary> vocabularyLesson, int idUnit) {
-		Bundle args = new Bundle();
-		//args.putInt("idLesson",idLesson);
-		Log.d("dsafsdaf",String.valueOf(vocabularyLesson.size()));
-		args.putSerializable("vocabularyLesson",vocabularyLesson);
-		args.putInt("idUnit",idUnit);
+	static ArrayList<Vocabulary> vocabularyLesson1;
+
+	public static StudyTypeDFragment newInstance(ArrayList<Vocabulary> vocabularyLesson) {
+		vocabularyLesson1 = vocabularyLesson;
 		StudyTypeDFragment fragment = new StudyTypeDFragment();
-		fragment.setArguments(args);
 		return fragment;
 	}
 	@Override
@@ -79,25 +78,27 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("vocabularyLesson", vocabularyLesson1);
 		switch(v.getId()){
 		case R.id.imgStudy:{
 			Intent intent = new Intent(this.getActivity(),LessonActivity.class);
-			Bundle bundle = new Bundle();
-
-			bundle.putSerializable("vocabularyLesson", getArguments().getSerializable("vocabularyLesson"));
-
-			bundle.putInt("idUnit", getArguments().getInt("idUnit"));
 			intent.putExtra("dataLesson",bundle);
 			startActivity(intent);
-			Toast.makeText(getActivity(), "You clicked on Study Button", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		case R.id.imgGame:{
-			Toast.makeText(getActivity(), "You clicked on Game Button", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(this.getActivity(),GameActivity.class);
+			intent.putExtra("dataLesson",bundle);
+			startActivity(intent);
 			break;
 		}
 		case R.id.imgTest:{
 			Toast.makeText(getActivity(), "You clicked on Test Button", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(this.getActivity(),TestLessonActivity.class);
+			intent.putExtra("dataLesson",bundle);
+			startActivity(intent);
+			Toast.makeText(getActivity(), "You clicked on Study Button", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		case R.id.imgTest1:{

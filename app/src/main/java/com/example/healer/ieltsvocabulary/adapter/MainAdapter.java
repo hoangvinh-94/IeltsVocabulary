@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.healer.ieltsvocabulary.fragment.MainFragment;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;

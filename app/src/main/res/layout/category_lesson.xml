@@ -3,14 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+	android:weightSum="1">
 
 	<ListView
 	    android:id="@+id/listLesson"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" 
-	    ></ListView>
-
+	    android:layout_height="453dp"
+		android:layout_weight="0.94"></ListView>
+	<Button
+		android:id="@+id/addLesson"
+		android:layout_width="wrap_content"
+		android:layout_height="50dp"
+		android:background="@drawable/boderradius"
+		android:text="Add Lesson"
+		android:layout_gravity="center_horizontal"
+		android:drawableLeft="@android:drawable/ic_input_add"
+		android:visibility="invisible"
+		/>
 	<RelativeLayout 
 	    android:id="@+id/choose_Study"
 	    android:layout_width="wrap_content"

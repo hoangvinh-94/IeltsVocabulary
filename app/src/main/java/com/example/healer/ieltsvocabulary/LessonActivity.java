@@ -21,7 +21,6 @@ public class LessonActivity extends FragmentActivity {
         setContentView(R.layout.activity_lesson);
         Intent intent = getIntent();
         ArrayList<Vocabulary> vocabularyLesson = (ArrayList<Vocabulary>) intent.getBundleExtra("dataLesson").getSerializable("vocabularyLesson");
-        int idUnit = intent.getBundleExtra("dataLesson").getInt("idUnit");
         viewPager = (ViewPager)findViewById(R.id.view_paper);
         MainAdapter ma = new MainAdapter(getSupportFragmentManager(),vocabularyLesson);
         viewPager.setAdapter(ma);

@@ -30,10 +30,10 @@ public class UnitController {
     }
 
     // get Data from Unit table in Sqlite DB
-    public static ArrayList<Unit> loadData(Context context){
+    public  ArrayList<Unit> loadData(){
         ArrayList<Unit>  units = new ArrayList<Unit>();
-        Uri avatarUri = VocabularyBuiltUri.UnitEntry.CONTENT_URI;
-        Cursor c = context.getContentResolver().query(avatarUri,null,null,null,null);
+        String sql = "SELECT * FROM UNITS";
+        Cursor c = db.rawQuery(sql,null);
         c.moveToFirst();
         while(c.isAfterLast() == false){
             units.add(new Unit(c.getInt(0),c.getString(1).toString().trim(),c.getInt(3),c.getString(2).toString().trim()));
@@ -43,31 +43,5 @@ public class UnitController {
         return units;
 
     }
-    public void saveImageToDB(){
-        ContentValues values = new ContentValues();
-        values.put("picture","vinh");
-        db.update("VOCABULARYS", values,"VOCABULARYS.vocabularyID = 2", null );
-        /*
-        Uri fileUri =  Uri.parse("file:///C:/Users/vinhp/Desktop/new-forest-accommodation-large-icon.png");
-        try {
-            FileInputStream fis = new FileInputStream(String.valueOf(fileUri));
-            byte[] image = new byte[0];
-            try {
-                image = new byte[fis.available()];
-                fis.read(image);
-                ContentValues values = new ContentValues();
-                values.put("image",image);
-                db.update("VOCABULARYS", values,"VOCABULARYS.vocabularyID = ?", new String[]{"2"} );
-                fis.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-*/
-    }
-
 
 }

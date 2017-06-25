@@ -10,5 +10,6 @@
             android:textStyle="bold"
             android:text="asdfasfs"
             android:padding="10dp"
+            android:background="#FFFF99"
             android:layout_height="wrap_content" />
 </LinearLayout>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.example.healer.ieltsvocabulary.HomeActivity;
 import com.example.healer.ieltsvocabulary.R;
+import com.example.healer.ieltsvocabulary.controller.VocabularyController;
 import com.example.healer.ieltsvocabulary.fragment.LessonFragment;
 import com.example.healer.ieltsvocabulary.model.*;
 
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 public class HomeAdapter extends ArrayAdapter<Unit> {
@@ -47,13 +49,20 @@ public class HomeAdapter extends ArrayAdapter<Unit> {
 		final Unit unit = arr.get(position);
 		ImageButton img = (ImageButton) convertView.findViewById(R.id.img_unit);
 		img.setImageBitmap(decodeFile(unit.getAvatar()));
+		VocabularyController vc = new VocabularyController(context);
+		final int size = vc.numberOfUnit(unit.getId());
 		img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				LessonFragment lf = LessonFragment.newInstance(position,unit.getId());
-				context.getFragmentManager().beginTransaction().replace(R.id.fragment_container,lf).addToBackStack(null).commit();
 
-				//Toast.makeText(context,"asdfas",Toast.LENGTH_SHORT).show();
+				if(size <= 0){
+					Toast.makeText(context,"No data for this Unit",Toast.LENGTH_SHORT).show();
+				}
+				else {
+					LessonFragment lf = LessonFragment.newInstance(unit.getId());
+					context.getFragmentManager().beginTransaction().replace(R.id.fragment_container, lf).addToBackStack(null).commit();
+				}
+
 			}
 		});
 		return convertView;
