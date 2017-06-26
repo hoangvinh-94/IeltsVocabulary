@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.speech.tts.TextToSpeech;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ import com.example.healer.ieltsvocabulary.controller.ImageController;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Vector;
 
@@ -46,6 +48,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Vector v;
     private int score = 0;
     private LinearLayout layoutGame;
+    private TextToSpeech textToSpeech;
+    int resultSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -70,7 +74,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         btnplayGame.setOnClickListener(this);
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS){
+                    resultSpeech = textToSpeech.setLanguage(Locale.US);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Your device cannot read this word!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         randomNewWord(vocabularyLesson,im);
+
 
     }
 
@@ -87,6 +103,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             k = r.nextInt(A.size());
         }
         v.add(k);
+        textToSpeech.speak(A.get(k).getWord(), TextToSpeech.QUEUE_FLUSH, null);
         //image.setImageBitmap(im.loadImage(A.get(k).getImage()));
         resetLayout();
         createRow(A.get(k).getWord(),layoutBlank);

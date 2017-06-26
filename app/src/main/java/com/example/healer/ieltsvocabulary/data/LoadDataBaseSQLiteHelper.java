@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
@@ -24,6 +25,7 @@ public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 
 	private Context context;
 	private SQLiteDatabase myDatabase;
+
 
 
 

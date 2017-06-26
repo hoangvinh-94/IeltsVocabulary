@@ -36,15 +36,17 @@ public class HomeActivity extends AppCompatActivity {
        // Bitmap bit = ic.loadImg();
       //  if(bit == null) Log.d("null", "null");
 
-        String []image = {"images/accommodate.jpg","images/adolescence.jpg","images/adopt.jpg","images/adulthood.jpg","images/bond.jpg","images/brotherhood.jpg"};
+        String []image = {"images/accommodate.jpg","images/adolescence.jpg","images/adopt.jpg","images/adulthood.jpg","images/bond.jpg"};
         for(int i=0; i < image.length; i++){
-            ic.saveImage(image[i],1);
+            ic.saveImage(image[i],i+1);
         }
+
+
+        /*
         String []image1 = {"images/ability.jpg","images/abstract.jpg","images/acquire.jpg","images/adolescent.jpg","images/behaviour.jpg"};
         for(int i=0; i < image.length; i++){
             ic.saveImage(image[i],2);
-        }
-        listUnit.add(new Unit(1,"asdfas",12,"images/category1.jpg"));
+        }*/
         homeAdapter = new HomeAdapter(this,R.layout.custom_home, listUnit);
         GridView gv = (GridView) findViewById(R.id.listUnit);
         gv.setAdapter(homeAdapter);

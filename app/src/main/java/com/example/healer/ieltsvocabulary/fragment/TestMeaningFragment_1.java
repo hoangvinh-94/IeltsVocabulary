@@ -170,28 +170,27 @@ public class TestMeaningFragment_1 extends Fragment {
                 num = ques.nextInt(5);
                 p1 = ques.nextInt(4);
             }
+            ArrayList<Mean> means1 = (new MeanController(this.getContext()).getMeanById(vocabularyLesson.get(num).getId()));
             setMean[num] = 1;
             setPos[p1] = 1;
             if(setBtn[p1] == 0 && p1 == 0) {
-                word1.setText( means.get(0).getMean());
+                word1.setText( means1.get(0).getMean());
                 setBtn[0] = 1;
 
             }
             if(setBtn[p1] == 0 && p1 == 1) {
-                word2.setText( means.get(0).getMean());
+                word2.setText( means1.get(0).getMean());
                 setBtn[1] = 1;
             }
             if(setBtn[p1] == 0 && p1 == 2) {
-                word3.setText( means.get(0).getMean());
+                word3.setText( means1.get(0).getMean());
                 setBtn[2] = 1;
             }
             if(setBtn[p1] == 0 && p1 == 3) {
-                word4.setText( means.get(0).getMean());
+                word4.setText( means1.get(0).getMean());
                 setBtn[3] = 1;
             }
-
         }
-
     }
     //Do text to voice
     public void doTextToVoiceTest(View v){

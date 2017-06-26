@@ -48,12 +48,9 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 		imgGame.setImageBitmap(decodeFile("images/game.png"));
 		ImageButton imgTest = (ImageButton) rootView.findViewById(R.id.imgTest);
 		imgTest.setImageBitmap(decodeFile("images/test.png"));
-		ImageButton imgTest1 = (ImageButton) rootView.findViewById(R.id.imgTest1);
-		imgTest1.setImageBitmap(decodeFile("images/category1.jpg"));
 		imgGame.setOnClickListener(this);
 		imgStudy.setOnClickListener(this);
 		imgTest.setOnClickListener(this);
-		imgTest1.setOnClickListener(this);
 		return rootView;
 	}
 	private Bitmap decodeFile(String f){
@@ -99,10 +96,6 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 			intent.putExtra("dataLesson",bundle);
 			startActivity(intent);
 			Toast.makeText(getActivity(), "You clicked on Study Button", Toast.LENGTH_SHORT).show();
-			break;
-		}
-		case R.id.imgTest1:{
-			Toast.makeText(getActivity(), "You clicked on Test1 Button", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		default:break;

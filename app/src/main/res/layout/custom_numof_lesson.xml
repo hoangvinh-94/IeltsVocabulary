@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="10dp"
+    android:padding="2dp"
     android:layout_height="match_parent">
         <TextView
             android:id="@+id/txtLesson"
@@ -9,7 +9,7 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:text="asdfasfs"
-            android:padding="10dp"
-            android:background="#FFFF99"
+            android:padding="5dp"
+            android:background="@drawable/lesson_pressed"
             android:layout_height="wrap_content" />
 </LinearLayout>
