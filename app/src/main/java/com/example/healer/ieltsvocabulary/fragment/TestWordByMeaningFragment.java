@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.controller.MeanController;
+import com.example.healer.ieltsvocabulary.controller.UnitController;
 import com.example.healer.ieltsvocabulary.model.Mean;
+import com.example.healer.ieltsvocabulary.model.Unit;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.Random;
 
 public class TestWordByMeaningFragment extends Fragment {
     ArrayList<Vocabulary> vocabularyLesson;
+    int lessonNumber;
     Button word1, word2, word3, word4;
     TextView word;
     ImageButton listenBtn;
@@ -32,6 +35,7 @@ public class TestWordByMeaningFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public class TestWordByMeaningFragment extends Fragment {
         word2 = (Button)rootView.findViewById(R.id.test_compare_word2);
         word3 = (Button)rootView.findViewById(R.id.test_compare_word3);
         word4 = (Button)rootView.findViewById(R.id.test_compare_word4);
+        TextView unitTitle = (TextView) rootView.findViewById(R.id.unitTitle);
+        TextView lesson = (TextView) rootView.findViewById(R.id.lessonNumber);
 
 
         listenBtn = (ImageButton)rootView.findViewById(R.id.tracnghiem_word_Btn);
@@ -54,6 +60,10 @@ public class TestWordByMeaningFragment extends Fragment {
         else {
             return rootView;
         }
+
+        Unit unit = (new UnitController(this.getActivity())).getUnit(vocabularyLesson.get(0).getUnitId());
+        unitTitle.setText(unit.getName());
+        lesson.setText("Lesson "+String.valueOf(lessonNumber+1));
 
         //Checked result when user choose an answer
         word1.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +106,7 @@ public class TestWordByMeaningFragment extends Fragment {
 
         return rootView;
     }
+
     //Method set background and text color of other button except button is clicked.
     private void settingNormalButton(Button button1, Button button2, Button button3){
         button1.setBackgroundResource(R.drawable.my_btn_bg);
@@ -105,6 +116,7 @@ public class TestWordByMeaningFragment extends Fragment {
         button3.setBackgroundResource(R.drawable.my_btn_bg);
         button3.setTextColor(getResources().getColor(R.color.test_dark_blue) );
     }
+
     //Method set which button is the right answer, random the question
     private void settingQuestion(){
         int[] setMean = {0, 0, 0, 0, 0};
@@ -150,7 +162,6 @@ public class TestWordByMeaningFragment extends Fragment {
             if(setBtn[p1] == 0 && p1 == 0) {
                 word1.setText( vocabularyLesson.get(num).getWord());
                 setBtn[0] = 1;
-
             }
             if(setBtn[p1] == 0 && p1 == 1) {
                 word2.setText( vocabularyLesson.get(num).getWord());
@@ -174,46 +185,34 @@ public class TestWordByMeaningFragment extends Fragment {
         switch (v.getId()) {
             case R.id.test_compare_word1:
                 if((word1.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                    //      Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
-
-                    mCallback.onReturnAnswerWordByMeaning(true);
+                    mCallback.onReturnAnswerWordByMeaning(true,word1);
                 }
                 else {
-                    //     Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerWordByMeaning(false);
+                    mCallback.onReturnAnswerWordByMeaning(false,word1);
                 }
                 break;
             case R.id.test_compare_word2:
                 if((word2.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                    //  Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
-
-                    mCallback.onReturnAnswerWordByMeaning(true);
+                    mCallback.onReturnAnswerWordByMeaning(true,word2);
                 }
                 else {
-                    //      Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerWordByMeaning(false);
+                    mCallback.onReturnAnswerWordByMeaning(false,word2);
                 }
                 break;
             case R.id.test_compare_word3:
                 if((word3.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                    //    Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
-
-                    mCallback.onReturnAnswerWordByMeaning(true);
+                    mCallback.onReturnAnswerWordByMeaning(true,word3);
                 }
                 else {
-                    //   Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerWordByMeaning(false);
+                    mCallback.onReturnAnswerWordByMeaning(false,word3);
                 }
                 break;
             case R.id.test_compare_word4:
                 if((word4.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                    //  Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
-
-                    mCallback.onReturnAnswerWordByMeaning(true);
+                    mCallback.onReturnAnswerWordByMeaning(true,word4);
                 }
                 else {
-                    //  Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerWordByMeaning(false);
+                    mCallback.onReturnAnswerWordByMeaning(false,word4);
                 }
                 break;
             default:
@@ -222,9 +221,9 @@ public class TestWordByMeaningFragment extends Fragment {
     }
 
 
-    //    // Container Activity must implement this interface
+    //  Container Activity must implement this interface
     public interface TestWordByMeaningInterface {
-        public boolean onReturnAnswerWordByMeaning(boolean answer);
+        public boolean onReturnAnswerWordByMeaning(boolean answer, Button B);
     }
 
     @Override
@@ -240,5 +239,6 @@ public class TestWordByMeaningFragment extends Fragment {
                     + " must implement TestWordInterface");
         }
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.healer.ieltsvocabulary.fragment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -11,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.healer.ieltsvocabulary.R;
+import com.example.healer.ieltsvocabulary.controller.UnitController;
+import com.example.healer.ieltsvocabulary.model.Unit;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ import java.util.Random;
 
 public class TestListeningFragment extends Fragment {
     ArrayList<Vocabulary> vocabularyLesson;
+    int lessonNumber;
     String word;
     EditText resultEditText;
     ImageButton listenBtn;
@@ -45,6 +50,8 @@ public class TestListeningFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_test_listening, container, false);
         word = "";
         resultEditText = (EditText)rootView.findViewById(R.id.test_listening_edit_text);
+        TextView unitTitle = (TextView) rootView.findViewById(R.id.unitTitle);
+        TextView lesson = (TextView) rootView.findViewById(R.id.lessonNumber);
 
         listenBtn = (ImageButton) rootView.findViewById(R.id.tracnghiem_word_Btn);
         Bundle arguments = getArguments();
@@ -55,7 +62,9 @@ public class TestListeningFragment extends Fragment {
             return rootView;
         }
 
-
+        Unit unit = (new UnitController(this.getActivity())).getUnit(vocabularyLesson.get(0).getUnitId());
+        unitTitle.setText(unit.getName());
+        lesson.setText("Lesson "+String.valueOf(lessonNumber+1));
         textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -66,6 +75,7 @@ public class TestListeningFragment extends Fragment {
                 }
             }
         });
+
         //Handle when volumn button is clicked
         listenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,18 +97,16 @@ public class TestListeningFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(resultEditText.getText().toString().toLowerCase().equals(word.toLowerCase())){
-                    Toast.makeText(getContext(), resultEditText.getText(), Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerListening(true);
+                if(resultEditText.getText().toString().trim().toLowerCase().equals(word.trim().toString().toLowerCase())){
+                    mCallback.onReturnAnswerListening(true, resultEditText);
                 }
                 else {
-                    mCallback.onReturnAnswerListening(false);
+                    mCallback.onReturnAnswerListening(false, resultEditText);
                 }
             }
         });
         return rootView;
     }
-
 
     //Method set which button is the right answer, random the question
     private void settingQuestion() {
@@ -118,7 +126,6 @@ public class TestListeningFragment extends Fragment {
                     Toast.makeText(getContext(),
                             "You device is not support feature!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), word, Toast.LENGTH_LONG).show();
                     textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null);
                 }
                 break;
@@ -129,18 +136,11 @@ public class TestListeningFragment extends Fragment {
         }
     }
 
-    //Stop and shutdown text to speech
-    public void onDestroy() {
-        super.onDestroy();
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
-    }
+
 
     //    // Container Activity must implement this interface
     public interface TestListeningInterface {
-        public boolean onReturnAnswerListening(boolean answer);
+        public boolean onReturnAnswerListening(boolean answer, EditText E);
     }
 
     @Override
@@ -156,4 +156,14 @@ public class TestListeningFragment extends Fragment {
                     + " must implement TestWordInterface");
         }
     }
+    //Stop and shutdown text to speech
+    public void onDestroy() {
+        super.onDestroy();
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+    }
+
+
 }

@@ -1,16 +1,22 @@
 package com.example.healer.ieltsvocabulary;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.fragment.TestListeningFragment;
 import com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFragment;
-import com.example.healer.ieltsvocabulary.fragment.TestMeaningFragment_1;
+import com.example.healer.ieltsvocabulary.fragment.TestMeaningFragment;
 import com.example.healer.ieltsvocabulary.fragment.TestUnitFragment;
 import com.example.healer.ieltsvocabulary.fragment.TestWordByMeaningFragment;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
@@ -18,12 +24,12 @@ import com.example.healer.ieltsvocabulary.model.Vocabulary;
 import java.util.ArrayList;
 
 public class TestLessonActivity extends AppCompatActivity
-        implements TestMeaningFragment_1.TestMeaningFragment_1Interface,
+        implements TestMeaningFragment.TestMeaningFragment_1Interface,
         TestMeaningByListenFragment.TestMeaningByListeningInterface,
         TestListeningFragment.TestListeningInterface,
-        TestWordByMeaningFragment.TestWordByMeaningInterface
+        TestWordByMeaningFragment.TestWordByMeaningInterface,TestUnitFragment.TestUnitFragmentInterface
 {
-    boolean answer = false, meaning1 = false, meaningByListening = false, mListening = false, wordByMeaning = false;
+    boolean Answer = false, meaning1 = false, meaningByListening = false, mListening = false, wordByMeaning = false, wordInBlank = false;
     int test[] = {0  //0. meaning 1
             , 0    //1. meaning by listening
             , 0    //2. mListening
@@ -31,24 +37,26 @@ public class TestLessonActivity extends AppCompatActivity
             , 0    //4. speech words
             , 0};  //5. speech phrase
     ArrayList<Vocabulary> vocabularyLesson;
+    int lessonNumber;
+    Button button;
+    EditText result;
+    int score = 0;
+    AnimationDrawable animation;
+    CountDownTimer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_lesson);
-
+        ActionBar bar = getSupportActionBar();
+        bar.setHomeAsUpIndicator(R.drawable.home);
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("Ielts Vocabulary");
         Intent intent = getIntent();
-        vocabularyLesson = (ArrayList<Vocabulary>) intent.getBundleExtra("dataLesson").getSerializable("vocabularyLesson");
-        int idUnit = intent.getBundleExtra("dataLesson").getInt("idUnit");
-        Log.d("sadfas",String.valueOf(vocabularyLesson.get(0).getWord()));
+        Bundle bundle = intent.getBundleExtra("dataLesson");
+        vocabularyLesson = (ArrayList<Vocabulary>) bundle.getSerializable("vocabularyLesson");
+        lessonNumber = bundle.getInt("lesson");
 
-
-
-//        viewPager = (ViewPager)findViewById(R.id.view_paper);
-//        MainAdapter ma = new MainAdapter(getSupportFragmentManager(),vocabularyLesson);
-//        viewPager.setAdapter(ma);
-
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
         if (findViewById(R.id.fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
@@ -60,9 +68,10 @@ public class TestLessonActivity extends AppCompatActivity
 
             Bundle args = new Bundle();
             args.putSerializable("vocabularyLesson", vocabularyLesson);
+            args.putInt("lesson",lessonNumber);
 
             // Create a new Fragment to be placed in the activity layout
-            TestMeaningFragment_1 firstFragment = new TestMeaningFragment_1();
+            TestMeaningFragment firstFragment = new TestMeaningFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
@@ -72,165 +81,180 @@ public class TestLessonActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, firstFragment).commit();
         }
-
     }
-    public void changeFragment(View view){
-        if(view == findViewById(R.id.nextBtn)){
-            if(meaning1 && test[0] == 1){
-                test[0] = 0;
-                TestMeaningByListenFragment newFragment = new TestMeaningByListenFragment();
+
+    public void changeFragment(View view) {
+        if (view == findViewById(R.id.nextBtn)) {
+            if (Answer) {
+                Answer = false;
+                if (test[0] == 1) {
+                    score++;
+                    test[0] = 0;
+                    button.setBackgroundResource(R.drawable.check_correct);
+                    animation = (AnimationDrawable) button.getBackground();
+                    animation.start();
+                    TestMeaningByListenFragment newFragment = new TestMeaningByListenFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[1] == 1) {
+                    score++;
+                    test[1] = 0;
+                    button.setBackgroundResource(R.drawable.check_correct);
+                    animation = (AnimationDrawable) button.getBackground();
+                    animation.start();
+                    TestListeningFragment newFragment = new TestListeningFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[2] == 1) {
+                    score++;
+                    test[2] = 0;
+                    result.setTextColor(Color.parseColor("#00FF00"));
+                    TestWordByMeaningFragment newFragment = new TestWordByMeaningFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[3] == 1) {
+                    score++;
+                    test[3] = 0;
+                    button.setBackgroundResource(R.drawable.check_correct);
+                    animation = (AnimationDrawable) button.getBackground();
+                    animation.start();
+                    TestUnitFragment newFragment = new TestUnitFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[4] == 1) {
+                    score++;
+                    test[4] = 0;
+                    button.setBackgroundResource(R.drawable.check_correct);
+                    animation = (AnimationDrawable) button.getBackground();
+                    animation.start();
+                    Bundle args = new Bundle();
+                    Intent intent = new Intent(this, ScoreTestActivity.class);
+                    args.putSerializable("vocabularyLesson", vocabularyLesson);
+                    args.putInt("lesson", lessonNumber);
+                    args.putInt("score", score);
+                    intent.putExtra("data", args);
+                    startActivity(intent);
+                }
+            } else {
+                if (test[0] == 1) {
+                    test[0] = 0;
+                    button.setBackgroundResource(R.drawable.my_btn_bg_incorrect);
+                    TestMeaningByListenFragment newFragment = new TestMeaningByListenFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[1] == 1) {
+                    test[1] = 0;
+                    button.setBackgroundResource(R.drawable.my_btn_bg_incorrect);
+                    TestListeningFragment newFragment = new TestListeningFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[2] == 1) {
+                    test[2] = 0;
+                    result.setTextColor(Color.parseColor("#FF0000"));
+                    TestWordByMeaningFragment newFragment = new TestWordByMeaningFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[3] == 1) {
+                    test[3] = 0;
+                    button.setBackgroundResource(R.drawable.my_btn_bg_incorrect);
+                    TestUnitFragment newFragment = new TestUnitFragment();
+                    replaceFragment(newFragment);
+                }
+                if (test[4] == 1) {
+                    test[4] = 0;
+                    button.setBackgroundResource(R.drawable.my_btn_bg_incorrect);
+                    Bundle args = new Bundle();
+                    Intent intent = new Intent(this, ScoreTestActivity.class);
+                    args.putSerializable("vocabularyLesson", vocabularyLesson);
+                    args.putInt("lesson", lessonNumber);
+                    args.putInt("score", score);
+                    intent.putExtra("data", args);
+                    startActivity(intent);
+                }
+            }
+        }
+    }
+    public void replaceFragment(final Fragment newFragment){
+        timer = new CountDownTimer(1000 * 2, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
                 Bundle args = new Bundle();
                 args.putSerializable("vocabularyLesson", vocabularyLesson);
-
+                args.putInt("lesson",lessonNumber);
                 newFragment.setArguments(args);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack so the user can navigate back
                 transaction.replace(R.id.fragment_container, newFragment);
                 transaction.addToBackStack(null);
-
                 // Commit the transaction
                 transaction.commit();
             }
-            else {
-                if (meaningByListening && test[1] == 1) {
-                    test[1] = 0;
-                    TestListeningFragment newFragment = new TestListeningFragment();
-                    Bundle args = new Bundle();
-                    args.putSerializable("vocabularyLesson", vocabularyLesson);
+        }.start();
 
-                    newFragment.setArguments(args);
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                    // Replace whatever is in the fragment_container view with this fragment,
-                    // and add the transaction to the back stack so the user can navigate back
-                    transaction.replace(R.id.fragment_container, newFragment);
-                    transaction.addToBackStack(null);
-
-                    // Commit the transaction
-                    transaction.commit();
-                } else {
-                    if (mListening && test[2] == 1) {
-                        test[2] = 0;
-                        TestWordByMeaningFragment newFragment = new TestWordByMeaningFragment();
-                        Bundle args = new Bundle();
-                        args.putSerializable("vocabularyLesson", vocabularyLesson);
-
-                        newFragment.setArguments(args);
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                        // Replace whatever is in the fragment_container view with this fragment,
-                        // and add the transaction to the back stack so the user can navigate back
-                        transaction.replace(R.id.fragment_container, newFragment);
-                        transaction.addToBackStack(null);
-
-                        // Commit the transaction
-                        transaction.commit();
-                    } else {
-                        if (wordByMeaning && test[3] == 1) {
-                            test[3] = 0;
-                            TestUnitFragment newFragment = new TestUnitFragment();
-                            Bundle args = new Bundle();
-                            args.putSerializable("vocabularyLesson", vocabularyLesson);
-
-                            newFragment.setArguments(args);
-                            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                            // Replace whatever is in the fragment_container view with this fragment,
-                            // and add the transaction to the back stack so the user can navigate back
-                            transaction.replace(R.id.fragment_container, newFragment);
-                            transaction.addToBackStack(null);
-
-                            // Commit the transaction
-                            transaction.commit();
-                        }
-                    }
-                }
-            }
-//                        else {
-//                            if((wordSpeechTest && test[3] == 1 && test[4] == -1)||
-//                                    (wordSpeechTest && test[3] == 1 && test[4] != -1 && vocabulary.isOneWord())){
-//                                test[3] = 0;
-//                                test[4] = 0;
-//                                FragmentPhraseSpeech newFragment = new FragmentPhraseSpeech();
-//                                Bundle args = new Bundle();
-//                                args.putSerializable("WordTest", vocabulary);
-//
-//                                newFragment.setArguments(args);
-//                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//
-//                                // Replace whatever is in the fragment_container view with this fragment,
-//                                // and add the transaction to the back stack so the user can navigate back
-//                                transaction.replace(R.id.fragment_container, newFragment);
-//                                transaction.addToBackStack(null);
-//
-//                                // Commit the transaction
-//                                transaction.commit();
-//                            }
-//                            else {
-//                                if(phraseSpeechTest && test[5] == 1){
-//                                    test[5] = 0;
-//                                    Toast.makeText(this,
-//                                            "You has completed the test!", Toast.LENGTH_LONG).show();
-//                                    CountDownTimer timer1 = new CountDownTimer(1000,1000) {
-//                                        @Override
-//                                        public void onTick(long millisUntilFinished) {
-//                                        }
-//
-//                                        @Override
-//                                        public void onFinish() {
-//                                            //setTrue(PICTURE_WORD,Topic);
-//                                        }
-//                                    }.start();
-//
-//                                    Intent intent = new Intent(this, Compare.class);
-//                                    intent.putExtra("Vocabulary", vocabulary);
-//                                    startActivity(intent);
-//
-//                                }
-//                                else {
-//                                    Toast.makeText(this,
-//                                            "You answer: "+answer, Toast.LENGTH_SHORT).show();
-//                                }
-//
-//                            }
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
-
-        }
     }
 
     @Override
-    public boolean onReturnAnswer(boolean answer) {
-        meaning1 = answer;
+    public boolean onReturnAnswer(boolean answer, Button B) {
+        Answer = answer;
+        button = B;
         test[0] = 1;
-        return meaning1;
+        return Answer;
     }
 
     @Override
-    public boolean onReturnAnswerMeaningByListening(boolean answer) {
-        meaningByListening = answer;
+    public boolean onReturnAnswerMeaningByListening(boolean answer, Button B) {
+        Answer = answer;
+        button = B;
         test[1] = 1;
-        return meaningByListening;
+        return Answer;
     }
 
     @Override
-    public boolean onReturnAnswerListening(boolean answer) {
-        mListening = answer;
+    public boolean onReturnAnswerListening(boolean answer, EditText E) {
+        Answer = answer;
+        result = E;
         test[2] = 1;
-        return mListening;
+        return Answer;
     }
 
     @Override
-    public boolean onReturnAnswerWordByMeaning(boolean answer) {
-        wordByMeaning = answer;
+    public boolean onReturnAnswerWordByMeaning(boolean answer, Button B) {
+        Answer = answer;
+        button = B;
         test[3] = 1;
-        return wordByMeaning;
+        return Answer;
+    }
+
+    @Override
+    public boolean onReturnAnswerBlank(boolean answer, Button B) {
+        Answer = answer;
+        button = B;
+        test[4] = 1;
+        return Answer;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(timer !=null){
+            timer.onFinish();
+        }
+        this.finish();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(timer !=null){
+            timer.onFinish();
+        }
+        this.finish();
+
     }
 }

@@ -31,6 +31,9 @@ public class SynonymousController {
                 "where VOCABULARYS.vocabularyID = SYNONYMOUS.vocabularyID and VOCABULARYS.vocabularyID  =  '"+idVocabulary+"'";
         Cursor c = db.rawQuery(sql,null);
         c.moveToFirst();
+        if(c.getCount() <= 0) {
+            return null;
+        }
         synonymous = new Synonymous(c.getInt(0),c.getString(1).toString().trim(),c.getInt(2));
         c.close();
         return synonymous;

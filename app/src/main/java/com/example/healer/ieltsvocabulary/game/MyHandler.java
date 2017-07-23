@@ -41,7 +41,6 @@ public class MyHandler extends Handler {
             }
             else if(msg.arg2==2) {
                 myPlayer.stop();
-                Log.d("vinh", "1");
             }
 
         }

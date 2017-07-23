@@ -1,6 +1,7 @@
 package com.example.healer.ieltsvocabulary.game;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +19,14 @@ public class ScoreActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_score);
+        ActionBar bar = getSupportActionBar();
+        bar.setHomeAsUpIndicator(R.drawable.home);
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("Ielts Vocabulary");
         Button tryAgain = (Button)findViewById(R.id.tryAgain);
-
         final Intent intent = getIntent();
         int score = intent.getBundleExtra("data").getInt("score");
         final ArrayList<Vocabulary> vocabularies = ( ArrayList<Vocabulary>)intent.getBundleExtra("data").getSerializable("vocabularys");
@@ -46,5 +51,10 @@ public class ScoreActivity extends AppCompatActivity {
             }
         });
         stopService(new Intent(this,MyServices.class));
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

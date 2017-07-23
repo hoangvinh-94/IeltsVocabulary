@@ -28,10 +28,6 @@ public class MyServices extends Service{
 		handler = new MyHandler(looper);
 	}
 
-
-
-
-
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub

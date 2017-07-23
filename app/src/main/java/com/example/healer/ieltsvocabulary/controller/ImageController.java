@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 
 /**
@@ -45,80 +46,7 @@ public class ImageController {
         db = mOpenHelper.getMyDatabase();
 
     }
-
-
-
-    public static void export() throws IOException {
-        //Open your local db as the input stream
-        String inFileName = "/data/data/com.example.healer.ieltsvocabulary/databases/IeltsVocabulary.db";
-        File dbFile = new File(inFileName);
-        FileInputStream fis = new FileInputStream(dbFile);
-
-        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String pathDir = "/Android/com.example.healer.ieltsvocabulary/";
-
-        String outFileName = pathDir +"IeltsVocabulary_copy.db";
-        //Open the empty db as the output stream
-        OutputStream output = new FileOutputStream(outFileName);
-        //transfer bytes from the inputfile to the outputfile
-        Log.d("output",output.toString());
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = fis.read(buffer))>0){
-            output.write(buffer, 0, length);
-        }
-        //Close the streams
-        output.flush();
-        output.close();
-        fis.close();
-    }
-    public void saveImage(String f, int id){
-        Bitmap img = decodeFile(f);
-        //Log.d("imageEncode",encodeTobase64(img));
-        String encode = encodeTobase64(img);
-        //byte[] data = getBitmapAsByteArray(img);
-        //String encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
-        Log.d("data", encode);
-        ContentValues values = new ContentValues();
-        values.put("image",encode);
-        db.update("VOCABULARYS", values,"VOCABULARYS.vocabularyID = '"+id+"'", null);
-    }
-
-    public Bitmap loadImage(byte[] image){
-        //byte[] image1 = Base64.decode(image, Base64.DEFAULT);
-        Bitmap imgBit = null;
-        imgBit = BitmapFactory.decodeByteArray(image,0,image.length);
-        return  imgBit;
-    }
-
-    public String encodeTobase64(Bitmap image) {
-        Bitmap immagex=image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
-        return imageEncoded;
-    }
-
-    public Bitmap getImage(String image_icon_data ) {
-        if(image_icon_data != null) {
-            byte[] image_data = Base64.decode(image_icon_data, Base64.DEFAULT);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.outHeight = 32; //32 pixles
-            options.outWidth = 32; //32 pixles
-            options.outMimeType = "image/*"; //this could be image/jpeg, image/png, etc
-
-            return BitmapFactory.decodeByteArray(image_data, 0, image_data.length, options);
-        }
-        return null;
-    }
-
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
-        return outputStream.toByteArray();
-    }
-    private Bitmap decodeFile(String f){
+    public  Bitmap decodeFile(String f){
         AssetManager mngr = context.getAssets();
         InputStream is = null;
         try {

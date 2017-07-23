@@ -14,6 +14,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/unitTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
@@ -23,6 +24,7 @@
             android:textColor="@color/button_pressed" />
 
         <TextView
+            android:id="@+id/lessonNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lesson 1"
@@ -43,24 +45,17 @@
         android:textStyle="normal"
         android:text="@string/test_unit"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
-
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtQuestion"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="5dp"
             android:text="I have a very close relationship ... education and academy success."
+            android:layout_marginBottom="10dp"
             android:textAlignment="center"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/colorPrimaryDark" />
-
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,7 +67,7 @@
             android:layout_height="wrap_content"
             android:text="about"
             android:textAllCaps="false"
-            android:padding="8dp"
+            android:padding="10dp"
             android:textColor="@color/sunshine_blue"
             android:background="@drawable/my_btn_bg"
             android:layout_marginBottom="16dp"
@@ -86,6 +81,7 @@
             android:layout_height="wrap_content"
             android:text="between"
             android:textAllCaps="false"
+            android:padding="10dp"
             android:textColor="@color/sunshine_blue"
             android:background="@drawable/my_btn_bg"
             android:layout_marginBottom="16dp"
@@ -98,6 +94,7 @@
             android:layout_height="wrap_content"
             android:text="for"
             android:textAllCaps="false"
+            android:padding="10dp"
             android:textColor="@color/sunshine_blue"
             android:background="@drawable/my_btn_bg"
             android:layout_marginBottom="16dp"
@@ -111,6 +108,7 @@
             android:layout_height="wrap_content"
             android:text="in"
             android:textAllCaps="false"
+            android:padding="10dp"
             android:textColor="@color/sunshine_blue"
             android:background="@drawable/my_btn_bg"
             android:layout_marginBottom="16dp"

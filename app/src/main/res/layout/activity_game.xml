@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_playgame"
     tools:showIn="@layout/layout_main_game"
     android:layout_height="match_parent">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,19 +14,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageShow"
                 android:layout_width="match_parent"
                 android:layout_height="232dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="5dp"
+                android:layout_margin="30dp"
                 android:scaleType="fitXY"
-                android:background="@drawable/backimage"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp" />
+                android:background="@drawable/image_pressed" />
 
             <TableLayout
                 android:id="@+id/layoutBlank"
@@ -36,13 +29,11 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 android:layout_marginTop="5dp"
-                android:background="#CCCCCC"
                 app:layout_constraintTop_toBottomOf="@+id/imageView"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp">
-
 
             </TableLayout>
 
@@ -54,7 +45,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginTop="19dp"
-                android:background="#CCCCCC"
                 app:layout_constraintTop_toBottomOf="@+id/layoutBlank"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"

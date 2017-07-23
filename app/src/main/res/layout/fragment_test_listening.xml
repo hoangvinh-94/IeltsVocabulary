@@ -18,6 +18,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestListeningFragment
         android:paddingBottom="8dp">
 
         <TextView
+            android:id="@+id/unitTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
@@ -27,6 +28,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestListeningFragment
             android:textColor="@color/button_pressed" />
 
         <TextView
+            android:id="@+id/lessonNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lesson 1"

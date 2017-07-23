@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.controller.MeanController;
+import com.example.healer.ieltsvocabulary.controller.UnitController;
 import com.example.healer.ieltsvocabulary.model.Mean;
+import com.example.healer.ieltsvocabulary.model.Unit;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.Random;
 
 public class TestMeaningByListenFragment extends Fragment {
     ArrayList<Vocabulary> vocabularyLesson;
+    int lessonNumber;
     Button word1, word2, word3, word4;
     String word;
     ImageButton listenBtn;
@@ -37,29 +41,34 @@ public class TestMeaningByListenFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View rootView = inflater.inflate(R.layout.fragment_test_meaning_by_listen, container, false);
         word1 = (Button)rootView.findViewById(R.id.test_compare_word1);
         word2 = (Button)rootView.findViewById(R.id.test_compare_word2);
         word3 = (Button)rootView.findViewById(R.id.test_compare_word3);
         word4 = (Button)rootView.findViewById(R.id.test_compare_word4);
+        TextView unitTitle = (TextView) rootView.findViewById(R.id.unitTitle);
+        TextView lesson = (TextView) rootView.findViewById(R.id.lessonNumber);
 
         word = "";
         listenBtn = (ImageButton)rootView.findViewById(R.id.tracnghiem_word_Btn);
         Bundle arguments = getArguments();
         if (arguments != null) {
             vocabularyLesson = (ArrayList<Vocabulary>)arguments.getSerializable("vocabularyLesson");
+            lessonNumber = arguments.getInt("lesson");
             settingQuestion();
         }
         else {
             return rootView;
         }
 
-
+        Unit unit = (new UnitController(this.getActivity())).getUnit(vocabularyLesson.get(0).getUnitId());
+        unitTitle.setText(unit.getName());
+        lesson.setText("Lesson "+String.valueOf(lessonNumber+1));
         textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -71,6 +80,7 @@ public class TestMeaningByListenFragment extends Fragment {
                 }
             }
         });
+
         //Handle when volumn button is clicked
         listenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +129,7 @@ public class TestMeaningByListenFragment extends Fragment {
 
         return rootView;
     }
+
     //Method set background and text color of other button except button is clicked.
     private void settingNormalButton(Button button1, Button button2, Button button3){
         button1.setBackgroundResource(R.drawable.my_btn_bg);
@@ -128,6 +139,7 @@ public class TestMeaningByListenFragment extends Fragment {
         button3.setBackgroundResource(R.drawable.my_btn_bg);
         button3.setTextColor(getResources().getColor(R.color.test_dark_blue) );
     }
+
     //Method set which button is the right answer, random the question
     private void settingQuestion(){
         int[] setMean = {0, 0, 0, 0, 0};
@@ -142,6 +154,7 @@ public class TestMeaningByListenFragment extends Fragment {
         setMean[wordNum] = 1;
         Random p = new Random();
         int pos = p.nextInt(4);
+
         if(pos == 0) {
             word1.setText(means.get(0).getMean());
             setBtn[0] = 1;
@@ -191,6 +204,7 @@ public class TestMeaningByListenFragment extends Fragment {
         }
 
     }
+
     //Do text to voice
     public void doTextToVoiceTest(View v){
         switch (v.getId()){
@@ -200,7 +214,6 @@ public class TestMeaningByListenFragment extends Fragment {
                             "You device is not support feature!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getContext(),word, Toast.LENGTH_LONG).show();
                     textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null);
                 }
                 break;
@@ -210,51 +223,43 @@ public class TestMeaningByListenFragment extends Fragment {
                 break;
         }
     }
+
     //Checked the answer
     public void onClickAnswer(View v) {
         switch (v.getId()) {
             case R.id.test_compare_word1:
                 if((word1.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                          Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
 
-                    mCallback.onReturnAnswerMeaningByListening(true);
+                    mCallback.onReturnAnswerMeaningByListening(true,word1);
                 }
                 else {
-                         Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerMeaningByListening(false);
+                    mCallback.onReturnAnswerMeaningByListening(false,word1);
                 }
                 break;
             case R.id.test_compare_word2:
                 if((word2.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                      Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
 
-                    mCallback.onReturnAnswerMeaningByListening(true);
+                    mCallback.onReturnAnswerMeaningByListening(true,word2);
                 }
                 else {
-                          Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerMeaningByListening(false);
+                    mCallback.onReturnAnswerMeaningByListening(false, word2);
                 }
                 break;
             case R.id.test_compare_word3:
                 if((word3.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                        Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
 
-                    mCallback.onReturnAnswerMeaningByListening(true);
+                    mCallback.onReturnAnswerMeaningByListening(true,word3);
                 }
                 else {
-                       Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerMeaningByListening(false);
+                    mCallback.onReturnAnswerMeaningByListening(false,word3);
                 }
                 break;
             case R.id.test_compare_word4:
                 if((word4.getText().toString().toLowerCase()).equals(answer.toLowerCase())){
-                      Toast.makeText(getContext(),"1 TRUE!", Toast.LENGTH_LONG).show();
-
-                    mCallback.onReturnAnswerMeaningByListening(true);
+                    mCallback.onReturnAnswerMeaningByListening(true,word4);
                 }
                 else {
-                      Toast.makeText(getContext(), "1 FALSE!", Toast.LENGTH_LONG).show();
-                    mCallback.onReturnAnswerMeaningByListening(false);
+                    mCallback.onReturnAnswerMeaningByListening(false,word4);
                 }
                 break;
             default:
@@ -270,9 +275,10 @@ public class TestMeaningByListenFragment extends Fragment {
             textToSpeech.shutdown();
         }
     }
-    //    // Container Activity must implement this interface
+
+    //   Container Activity must implement this interface
     public interface TestMeaningByListeningInterface {
-        public boolean onReturnAnswerMeaningByListening(boolean answer);
+        public boolean onReturnAnswerMeaningByListening(boolean answer, Button B);
     }
 
     @Override
@@ -288,5 +294,6 @@ public class TestMeaningByListenFragment extends Fragment {
                     + " must implement TestWordInterface");
         }
     }
+
 
 }

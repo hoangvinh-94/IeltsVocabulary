@@ -28,9 +28,27 @@ public class MeanController {
     public ArrayList<Mean> getMeanById(int idVocabulary){
         ArrayList<Mean>  means = new ArrayList<Mean>();
         String sql = "select meanID, mean, MEANS.vicID\n" +
-                "from MEANS,  VOCABULARY_IN_CONTEXT, WORDTYPE, VOCABULARYS, VOCA_TYPE\n" +
-                "where MEANS.vicID = VOCABULARY_IN_CONTEXT.vicID and VOCA_TYPE.id =  VOCABULARY_IN_CONTEXT.vocaTypeID \n" +
-                "and VOCA_TYPE.wordTypeID = WORDTYPE.wordTypeID and VOCABULARYS.vocabularyID = VOCA_TYPE.vocabularyID and  VOCABULARYS.vocabularyID = '"+idVocabulary+"'";
+                "            from MEANS,  VOCABULARY_IN_CONTEXT, WORDTYPE, VOCABULARYS, VOCA_TYPE\n" +
+                "                where MEANS.vicID = VOCABULARY_IN_CONTEXT.vicID and VOCA_TYPE.id =  VOCABULARY_IN_CONTEXT.vocaTypeID \n" +
+                "                and VOCA_TYPE.wordTypeID = WORDTYPE.wordTypeID and VOCABULARYS.vocabularyID = VOCA_TYPE.vocabularyID and VOCABULARY_IN_CONTEXT.contextID == 4   and  VOCABULARYS.vocabularyID ='"+idVocabulary+"'";
+        Cursor c = db.rawQuery(sql,null);
+        c.moveToFirst();
+        while(c.isAfterLast() == false){
+            means.add(new Mean(c.getInt(0),c.getString(1).toString().trim(),c.getInt(2)));
+            c.moveToNext();
+        }
+        c.close();
+        return means;
+
+    }
+
+    // get Data from Unit table in Sqlite DB
+    public ArrayList<Mean> getMeanInContextById(int idVocabulary){
+        ArrayList<Mean>  means = new ArrayList<Mean>();
+        String sql = "select meanID, mean, MEANS.vicID\n" +
+                "            from MEANS,  VOCABULARY_IN_CONTEXT, WORDTYPE, VOCABULARYS, VOCA_TYPE\n" +
+                "                where MEANS.vicID = VOCABULARY_IN_CONTEXT.vicID and VOCA_TYPE.id =  VOCABULARY_IN_CONTEXT.vocaTypeID \n" +
+                "                and VOCA_TYPE.wordTypeID = WORDTYPE.wordTypeID and VOCABULARYS.vocabularyID = VOCA_TYPE.vocabularyID and VOCABULARY_IN_CONTEXT.contextID != 4   and  VOCABULARYS.vocabularyID ='"+idVocabulary+"'";
         Cursor c = db.rawQuery(sql,null);
         c.moveToFirst();
         while(c.isAfterLast() == false){

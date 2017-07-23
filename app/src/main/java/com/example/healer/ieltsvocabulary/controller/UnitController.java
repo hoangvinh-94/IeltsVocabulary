@@ -1,17 +1,12 @@
 package com.example.healer.ieltsvocabulary.controller;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+
 import com.example.healer.ieltsvocabulary.data.LoadDataBaseSQLiteHelper;
-import com.example.healer.ieltsvocabulary.data.VocabularyBuiltUri;
 import com.example.healer.ieltsvocabulary.model.Unit;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +37,19 @@ public class UnitController {
         c.close();
         return units;
 
+    }
+
+    public Unit getUnit(int id){
+        Unit unit  = new Unit();
+        String sql = "SELECT * FROM UNITS WHERE unitID = '"+id+"'";
+        Cursor c = db.rawQuery(sql,null);
+        c.moveToFirst();
+        unit.setId(c.getInt(0));
+        unit.setName(c.getString(1).toString().trim());
+        unit.setNumberOfWord(c.getInt(3));
+        unit.setAvatar(c.getString(2).toString().trim());
+        c.close();
+        return unit;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.healer.ieltsvocabulary.fragment;
 import com.example.healer.ieltsvocabulary.R;
 import com.example.healer.ieltsvocabulary.LessonActivity;
 import com.example.healer.ieltsvocabulary.TestLessonActivity;
+import com.example.healer.ieltsvocabulary.controller.ImageController;
 import com.example.healer.ieltsvocabulary.game.GameActivity;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
@@ -30,10 +31,14 @@ import java.util.ArrayList;
 public class StudyTypeDFragment extends DialogFragment implements OnClickListener {
 
 	static ArrayList<Vocabulary> vocabularyLesson1;
+	static int lessonNumber ;
+	static  int max;
 
-	public static StudyTypeDFragment newInstance(ArrayList<Vocabulary> vocabularyLesson) {
+	public static StudyTypeDFragment newInstance(ArrayList<Vocabulary> vocabularyLesson, int lesson, int lessonMax) {
 		vocabularyLesson1 = vocabularyLesson;
 		StudyTypeDFragment fragment = new StudyTypeDFragment();
+		lessonNumber = lesson;
+		max = lessonMax;
 		return fragment;
 	}
 	@Override
@@ -41,45 +46,32 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.dialog_typestudy, null);
+		ImageController ic = new ImageController(this.getActivity());
 		getDialog().setTitle("Your Selection");
 		ImageButton imgStudy = (ImageButton) rootView.findViewById(R.id.imgStudy);
-		imgStudy.setImageBitmap(decodeFile("images/study.png"));
+		imgStudy.setImageBitmap(ic.decodeFile("images/study-compressed.jpg"));
 		ImageButton imgGame= (ImageButton) rootView.findViewById(R.id.imgGame);
-		imgGame.setImageBitmap(decodeFile("images/game.png"));
+		imgGame.setImageBitmap(ic.decodeFile("images/game-compressed.jpg"));
 		ImageButton imgTest = (ImageButton) rootView.findViewById(R.id.imgTest);
-		imgTest.setImageBitmap(decodeFile("images/test.png"));
+		imgTest.setImageBitmap(ic.decodeFile("images/test-compressed.jpg"));
 		imgGame.setOnClickListener(this);
 		imgStudy.setOnClickListener(this);
 		imgTest.setOnClickListener(this);
 		return rootView;
 	}
-	private Bitmap decodeFile(String f){
-		AssetManager mngr = this.getActivity().getAssets();
-		InputStream is = null;
-		try {
-			is = mngr.open(f);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// Decode image size
-		BitmapFactory.Options o = new BitmapFactory.Options();
-		o.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(is,null,o);
 
-		// Decode with inSampleSize
-		BitmapFactory.Options o2 = new BitmapFactory.Options();
-		o2.inSampleSize=8;
-		return BitmapFactory.decodeStream(is, null, o2);
-	}
 	@SuppressLint("NewApi")
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("vocabularyLesson", vocabularyLesson1);
+
 		switch(v.getId()){
 		case R.id.imgStudy:{
 			Intent intent = new Intent(this.getActivity(),LessonActivity.class);
+			bundle.putInt("lessonMax",max);
+			bundle.putInt("lessonCurrent",lessonNumber);
 			intent.putExtra("dataLesson",bundle);
 			startActivity(intent);
 			break;
@@ -91,14 +83,20 @@ public class StudyTypeDFragment extends DialogFragment implements OnClickListene
 			break;
 		}
 		case R.id.imgTest:{
-			Toast.makeText(getActivity(), "You clicked on Test Button", Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(this.getActivity(),TestLessonActivity.class);
+			bundle.putInt("lesson",lessonNumber);
 			intent.putExtra("dataLesson",bundle);
 			startActivity(intent);
-			Toast.makeText(getActivity(), "You clicked on Study Button", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		default:break;
+		}
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (getDialog() != null && getDialog().isShowing()) {
+			getDialog().dismiss();
 		}
 	}
 

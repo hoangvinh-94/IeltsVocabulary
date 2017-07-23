@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<animation-list
+    android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/background_welcome1"
+        android:duration="500">
+    </item>
+    <item
+        android:drawable="@drawable/background_welcome2"
+        android:duration="500">
+    </item>
+    <item
+        android:drawable="@drawable/background_welcome3"
+        android:duration="500">
+    </item>
+    <item
+        android:drawable="@drawable/background_welcome4"
+        android:duration="500">
+    </item>
+    <item
+        android:drawable="@drawable/background_welcome4"
+        android:duration="500">
+    </item>
+
+
+</animation-list>

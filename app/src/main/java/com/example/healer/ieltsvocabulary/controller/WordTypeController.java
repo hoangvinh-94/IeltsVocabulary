@@ -3,6 +3,7 @@ package com.example.healer.ieltsvocabulary.controller;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.healer.ieltsvocabulary.data.LoadDataBaseSQLiteHelper;
 import com.example.healer.ieltsvocabulary.model.WordType;
@@ -33,6 +34,7 @@ public class WordTypeController {
         Cursor c = db.rawQuery(sql,null);
         c.moveToFirst();
         while(c.isAfterLast() == false){
+            Log.d("signature",c.getString(2).toString().trim());
             types.add(new WordType(c.getInt(0),c.getString(1).toString().trim(),c.getString(2).toString().trim()));
             c.moveToNext();
         }

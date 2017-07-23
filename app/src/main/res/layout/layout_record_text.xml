@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/bottomRecord"
+    android:weightSum="1"
+    android:padding="10dp"
+    >
+    <TextView
+        android:id="@+id/txtResultHear"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="BOND"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        android:layout_weight="0.9"/>
+    <ImageView
+        android:id="@+id/imageCheck"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/correct2"
+        android:layout_weight="0.1"/>
+
+</LinearLayout>

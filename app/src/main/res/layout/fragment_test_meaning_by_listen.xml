@@ -18,6 +18,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFr
         android:paddingBottom="8dp">
 
         <TextView
+            android:id="@+id/unitTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
@@ -27,6 +28,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFr
             android:textColor="@color/button_pressed" />
 
         <TextView
+            android:id="@+id/lessonNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lesson 1"
@@ -73,7 +75,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFr
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Spend money"
-        android:padding="8dp"
+        android:padding="10dp"
         style="@style/ButtonQuiz"
         />
 
@@ -82,6 +84,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFr
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buy something"
+        android:padding="10dp"
         style="@style/ButtonQuiz"
         />
     <Button
@@ -89,6 +92,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFr
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sell things"
+        android:padding="10dp"
         style="@style/ButtonQuiz"
         />
 
@@ -97,6 +101,7 @@ tools:context="com.example.healer.ieltsvocabulary.fragment.TestMeaningByListenFr
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Giving something to someone"
+        android:padding="10dp"
         style="@style/ButtonQuiz"
         />
 

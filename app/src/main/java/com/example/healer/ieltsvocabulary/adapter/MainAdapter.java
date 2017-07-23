@@ -30,6 +30,7 @@ public class MainAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = new MainFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("vocabulary",list.get(position));
+        bundle.putInt("pos",position);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -38,4 +39,5 @@ public class MainAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return list.size();
     }
+
 }

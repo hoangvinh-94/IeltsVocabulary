@@ -1,5 +1,6 @@
 package com.example.healer.ieltsvocabulary.game;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,8 +9,10 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.IntegerRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,14 +35,16 @@ import com.example.healer.ieltsvocabulary.controller.ImageController;
 import com.example.healer.ieltsvocabulary.model.Vocabulary;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener,View.OnTouchListener,View.OnDragListener {
-    ImageView[] PT;
-    char []A;
-    TextView []TV;
+    private char []A;
+    private TextView []TV;
     private ArrayList<Vocabulary> vocabularyLesson;
     private ImageController im;
     private TableLayout layoutBlank;
@@ -49,24 +54,31 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int score = 0;
     private LinearLayout layoutGame;
     private TextToSpeech textToSpeech;
-    int resultSpeech;
+    private int resultSpeech;
+    private  TextView []Dragged;
+    private int drag;
+    private  TextView []DrogTarget;
+    AnimationDrawable animation;
+    private int posRandom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main_game);
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
         im = new ImageController(this);
         v = new Vector();
         Intent intent = getIntent();
         vocabularyLesson = (ArrayList<Vocabulary>) intent.getBundleExtra("dataLesson").getSerializable("vocabularyLesson");
-        int idUnit = intent.getBundleExtra("dataLesson").getInt("idUnit");
         layoutBlank = (TableLayout) findViewById(R.id.layoutBlank);
         layoutResult = (TableLayout) findViewById(R.id.layoutResult);
         Button btnplayGame = (Button) findViewById(R.id.btnPlay);
         layoutGame = (LinearLayout) findViewById(R.id.layout_start_game);
         final ImageView imageAnimation = (ImageView)findViewById(R.id.imageAnimation);
-        image = (ImageView)findViewById(R.id.imageView);
-        final AnimationDrawable animation =  (AnimationDrawable) imageAnimation.getDrawable();
+        image = (ImageView)findViewById(R.id.imageShow);
+        image.setOnClickListener(this);
+        animation =  (AnimationDrawable) imageAnimation.getDrawable();
         imageAnimation.post(new Runnable() {
             @Override
             public void run() {
@@ -85,8 +97,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        randomNewWord(vocabularyLesson,im);
-
 
     }
 
@@ -94,26 +104,45 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this,MyServices.class));
+        animation.stop();
     }
 
-    public void randomNewWord(ArrayList<Vocabulary> A, ImageController im){
+    // Random key word in 5 words available
+    public void randomNewWord(final ArrayList<Vocabulary> A, ImageController im){
         Random r = new Random();
-        int k = r.nextInt(A.size());
+        int k = r.nextInt(A.size()); // random position in A Array
         while(v.contains(k)){
             k = r.nextInt(A.size());
         }
         v.add(k);
-        textToSpeech.speak(A.get(k).getWord(), TextToSpeech.QUEUE_FLUSH, null);
-        //image.setImageBitmap(im.loadImage(A.get(k).getImage()));
+        posRandom = k;
+        final int finalK = k;
+        CountDownTimer timer = new CountDownTimer(1000 * 2, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                // đọc từ được random
+                textToSpeech.speak(A.get(finalK).getWord(), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }.start();
+
+        image.setImageBitmap(im.decodeFile(A.get(k).getImage()));
         resetLayout();
         createRow(A.get(k).getWord(),layoutBlank);
         createRow1(A.get(k).getWord(),layoutResult);
+        drag = 0;
 
     }
 
+    // Create blank lines to contain random result
+    @SuppressLint("NewApi")
     public void createRow (String str, TableLayout l){
         A = getArrayCharacter(str);
         int len = A.length;
+        Dragged = new TextView[len];
         int len1 = 0;
         if(len > 6){
             len1 = 6;
@@ -139,13 +168,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     paramsRL.weight = 1;
                     paramsRL.setMargins(5, 5, 5, 5);
                     LN.setLayoutParams(paramsRL);
-                    LN.setBackgroundColor(Color.WHITE);
+                    LN.setBackgroundResource(R.drawable.bgtextview);
 
                     TextView txt = new TextView(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                     params.gravity = Gravity.CENTER;
                     params.setMargins(5,5,5,5);
                     txt.setLayoutParams(params);
+                    txt.setId(View.generateViewId());
                     txt.setGravity(Gravity.CENTER);
                     txt.setTextColor(Color.BLUE);
                     txt.setTextSize(25);
@@ -168,9 +198,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    // Create blank lines to contain result
+    @SuppressLint("NewApi")
     public void createRow1 (String str, TableLayout l){
         A = getArrayCharacter(str);
         TV = new TextView[A.length];
+        DrogTarget = new TextView[A.length];
         int len = A.length;
         int len1 = 0;
         if(len > 6){
@@ -190,11 +224,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     params.weight = 1;
                     params.setMargins(5, 5, 5, 5);
                     txt.setLayoutParams(params);
+                    txt.setId(View.generateViewId());
                     txt.setBackgroundResource(R.drawable.backotrong);
                     txt.setGravity(Gravity.CENTER);
                     txt.setTextSize(25);
+                    txt.setTextColor(Color.BLUE);
                     txt.setTypeface(Typeface.DEFAULT_BOLD);
                     txt.setOnDragListener(this);
+                    txt.setOnClickListener(this);
                     TV[j] = txt;
                     row.addView(txt);
 
@@ -208,11 +245,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // get ArrayCharacter from String
     public char [] getArrayCharacter(String str){
         char []A = str.toCharArray();
         return A;
     }
-
+    // get String from Array
     public String getString(char []A){
         String str ="";
         for(int i = 0; i< A.length ; i++){
@@ -221,24 +259,77 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         return str;
     }
 
+    // Reset all layout when next Word
     public void resetLayout(){
         layoutBlank.removeAllViews();
         layoutResult.removeAllViews();
     }
 
-
     @Override
     public void onClick(View view) {
+        int id = view.getId();
         switch (view.getId()){
             case R.id.btnPlay:
-                layoutGame.setVisibility(View.INVISIBLE);
-                Intent intent_services= new Intent(this,MyServices.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("PATH",R.raw.newstart);
-                intent_services.putExtra("MUSIC", bundle);
-                startService(intent_services);
+                CountDownTimer timer = new CountDownTimer(1000 * 2, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        layoutGame.setVisibility(View.INVISIBLE);
+                        Intent intent_services= new Intent(getApplicationContext(),MyServices.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("PATH",R.raw.newstart);
+                        intent_services.putExtra("MUSIC", bundle);
+                        startService(intent_services);
+                        randomNewWord(vocabularyLesson,im);
+                        animation.stop();
+                    }
+                }.start();
+
+
                 break;
-            default: break;
+            case R.id.imageShow:
+                textToSpeech.speak(vocabularyLesson.get(posRandom).getWord(), TextToSpeech.QUEUE_FLUSH, null);
+                break;
+            default:
+                // khi nhấn vào từ kéo bị sai sẽ trở về vị trí ban đầu.
+                for(int i=0;i<TV.length;i++){
+                    if( DrogTarget.length > 0){
+                        int j = 0;
+                       while(j < DrogTarget.length )
+                       {
+                           if(DrogTarget[j] != null){
+
+                               if(id != DrogTarget[j].getId()){
+                                   j++;
+                               }
+                               else {
+                                   if(!DrogTarget[j].getText().equals("")) {
+                                       Dragged[j].setEnabled(true);
+                                       Dragged[j].setText(DrogTarget[j].getText());
+                                       DrogTarget[j].setText("");
+                                       drag = j;
+                                       break;
+                                   }
+                                   else{
+                                       break;
+                                   }
+                               }
+                           }
+                           else{
+                               break;
+                           }
+
+                       }
+                       break;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                break;
         }
     }
 
@@ -246,73 +337,60 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onDrag(View view, DragEvent dragEvent) {
         int action = dragEvent.getAction();
         switch(action) {
-            case DragEvent.ACTION_DRAG_STARTED:
-                break;
-            case DragEvent.ACTION_DRAG_ENTERED:
-                break;
-            case DragEvent.ACTION_DRAG_LOCATION:
-                break;
-            case DragEvent.ACTION_DRAG_EXITED:
-                break;
             case DragEvent.ACTION_DROP:
                 // Dropped, reassign View to ViewGroup
-
                 View v1 = (View) dragEvent.getLocalState();
                 TextView dragged=(TextView)v1;
                 TextView dropTarget = (TextView)view;
-                dropTarget.setText(dragged.getText());
-                dragged.setTextColor(Color.RED);
-                MediaPlayer media = MediaPlayer.create(this, R.raw.matched);
-                media.start();
-                media.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    public void onCompletion(MediaPlayer mp) {
-                        // TODO Auto-generated method stub
-                        mp.release();
-                    }
-                });
-                int i=0;
-                Log.d("TV",String.valueOf(TV.length));
-                while(i < TV.length ){
-                    if(!TV[i].getText().equals("")) {
-                        i++;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                if(i >= TV.length){
-                    if(v.size() >= vocabularyLesson.size()){
-                        Intent intent = new Intent(this,ScoreActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("vocabularys",vocabularyLesson);
-                        bundle.putInt("score",score);
-                        intent.putExtra("data",bundle);
-                        startActivity(intent);
-                    }
-                    else {
-                        String result = "";
-                        for (int k = 0; k < TV.length; k++) {
-                            result += TV[k].getText().toString().trim();
+
+                // kiểm tra điều kiện có thể kéo từ vào
+                if(dropTarget.getText().equals(null) || dropTarget.getText().equals("")){
+                    dropTarget.setText(dragged.getText());
+
+                    // gán giá trị drop, drap trước đó để undo
+                    Dragged[drag] = dragged;
+                    DrogTarget[drag] = dropTarget;
+                    drag++;
+                    dragged.setText("");
+                    dragged.setEnabled(false);
+                    int i=0;
+                    while(i < TV.length ){
+                        if(!TV[i].getText().equals("")) {
+                            i++;
                         }
-                        if (result.toLowerCase().equals(getString(A))) {
-                            MediaPlayer mp = MediaPlayer.create(this, R.raw.votay);
-                            mp.start();
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                public void onCompletion(MediaPlayer mp) {
-                                    // TODO Auto-generated method stub
-                                    mp.release();
+                        else{
+                            break;
+                        }
+                    }
+                    if(i >= TV.length){
+                        String result = "";
+                        // kiểm tra nếu đã chơi hết các từ thì qua màn hình tính điểm
+                        if(v.size() >= vocabularyLesson.size()){
+                            checkWord(result);
+                            CountDownTimer timer = new CountDownTimer(1000 * 3, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
                                 }
-                            });
-                            score++;
-                            randomNewWord(vocabularyLesson, im);
-                        } else {
-                            for (int j = 0; j < getString(A).length(); j++) {
-                                if (!TV[j].getText().toString().toLowerCase().equals(String.valueOf(getString(A).charAt(j)))) {
-                                    TV[j].setBackgroundResource(R.drawable.backotrongerror);
-                                } else {
-                                    TV[j].setBackgroundResource(R.drawable.backotrong);
+
+                                @Override
+                                public void onFinish() {
+                                    Intent intent = new Intent(getApplicationContext(),ScoreActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("vocabularys",vocabularyLesson);
+                                    bundle.putInt("score",score);
+                                    intent.putExtra("data",bundle);
+                                    startActivity(intent);
                                 }
+                            }.start();
+
+                        }
+                        // random từ mới khác
+                        else {
+
+                            for (int k = 0; k < TV.length; k++) {
+                                result += TV[k].getText().toString().trim();
                             }
+                            checkWord(result);
                             CountDownTimer timer = new CountDownTimer(1000 * 3, 1000) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
@@ -327,12 +405,35 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 break;
-            case DragEvent.ACTION_DRAG_ENDED:
-                break;
             default: break;
         }
         return true;
     }
+
+    // Kiểm tra từ đã kéo đã chính xác không
+    public void checkWord( String result){
+        if (result.toLowerCase().equals(getString(A))) {
+            MediaPlayer mp= MediaPlayer.create(this,R.raw.matched);
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.release();
+                }
+            });
+            score++;
+        } else {
+            for (int j = 0; j < getString(A).length(); j++) {
+                if (!TV[j].getText().toString().toLowerCase().equals(String.valueOf(getString(A).charAt(j)))) {
+                    TV[j].setBackgroundResource(R.drawable.backotrongerror);
+                } else {
+                    TV[j].setBackgroundResource(R.drawable.backotrong);
+                }
+            }
+
+        }
+    }
+
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -355,5 +456,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

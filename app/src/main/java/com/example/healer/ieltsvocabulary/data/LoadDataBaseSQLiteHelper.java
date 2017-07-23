@@ -20,15 +20,9 @@ import android.util.Log;
 public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 
 	private String DB_PATH = "com.example.healer.ieltsvocabulary";
-	//"/data/data/com.example.learnvocabulary/databases/";
 	private static String DB_NAME = "IeltsVocabulary.db";
-
 	private Context context;
 	private SQLiteDatabase myDatabase;
-
-
-
-
 
 	public LoadDataBaseSQLiteHelper(Context context){
 		super(context, DB_NAME, null, 1);
@@ -90,6 +84,7 @@ public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 		myinput.close();
 	}
 
+	// Open database by path and database name.
 	public void open()
 	{
 		String myPath = DB_PATH + DB_NAME;
@@ -101,7 +96,6 @@ public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
 		myDatabase.close();
 		super.close();
 	}
-
 
 	// Check existing database
 	private boolean checkdatabase() {
@@ -126,7 +120,6 @@ public class LoadDataBaseSQLiteHelper extends SQLiteOpenHelper {
                                     CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub
-
 	}
 
 	@Override

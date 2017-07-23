@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/bg_startgame"
     android:orientation="vertical"
     tools:showIn="@layout/layout_main_game">
     <ImageView
@@ -25,5 +25,5 @@
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:padding="20dp"
-        android:background="@drawable/boderradius" />
+        android:background="@drawable/pressed_button" />
 </LinearLayout>

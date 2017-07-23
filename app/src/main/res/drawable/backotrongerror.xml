@@ -3,12 +3,12 @@
         
  <!-- Set màu nền-->
  <solid
- android:color="#55ECBF" >
+ android:color="#FFFFFF" >
  </solid>
   
  <!-- đặt thuộc tính màu và độ rộng của đường viền -->
  <stroke
- android:width="3dp"
+ android:width="2dp"
  android:color="#FB0818" >
  </stroke>
   
@@ -22,7 +22,7 @@
   
  <!-- và đây là bán kính đường tròn ở 4 góc -->
  <corners
- android:radius="20dp" >
+ android:radius="10dp" >
  </corners>
   
     

@@ -10,6 +10,7 @@ import com.example.healer.ieltsvocabulary.model.Vocabulary;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +35,15 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 	private static String NUMBER_OF_WORD = "number";
 	private static String DATA_SAVED = "data saved";
 	private static String ID_UNIT = "id";
+	private static String LESSON_FINISHED = "studiedWord";
 	private static String M = "m";
+
 	private Button btnAddLesson;
 	private ArrayList<SaveState> DataSaves = null;
 	int m = 0;
 	private int[] ID = new int[20];
 	private int[] Number = new int[20];
+	public static boolean studiedWord = false;
 	// create New LessonFragment with possition and id Unit
 	public static LessonFragment newInstance(int idUnit) {
 		Bundle args = new Bundle();
@@ -51,18 +55,21 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle BundlesavedInstanceState){
 		View rootView = inflater.inflate(R.layout.category_lesson,container, false);
+		final int NUMBER_MAX_UNIT = 20;
+		final int DEFAULT_VALUE = 0;
+
 		listView = (ListView) rootView.findViewById(R.id.listLesson);
 		btnAddLesson = (Button) rootView.findViewById(R.id.addLesson);
 		btnAddLesson.setOnClickListener(this);
 		VocabularyController VC = new VocabularyController(this.getActivity());
 		list = new ArrayList<Vocabulary>();
 		list = VC.loadDataByUnitId(id);
-		SharedPreferences loadData = this.getActivity().getSharedPreferences(DATA_SAVED,0);
-		Log.d("onCreateView",loadData.toString());
+		SharedPreferences loadData = this.getActivity().getSharedPreferences(DATA_SAVED,DEFAULT_VALUE);
+
 		if(loadData.contains(NUMBER_OF_WORD) || loadData.contains(ID_UNIT)){
 			loadState();
 			int p = 0;
-			while (p < 20 && ID[p] != id ){;
+			while (p < NUMBER_MAX_UNIT && ID[p] != id ){;
 				p++;
 			}
 			if(p < 20){
@@ -76,21 +83,25 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 		return rootView;
 	}
 
-
+	// Lưu trạng thái bài học hiện tại của người học
 	public void saveState(){
 		// Luu trang thai
 		SharedPreferences saveData = this.getActivity().getSharedPreferences(DATA_SAVED, MODE_PRIVATE);
 		SharedPreferences.Editor editor = saveData.edit();
 		int posUnit = id;
-		--posUnit;;
+		--posUnit;
 		ID[posUnit] = id;
 		Number[posUnit] = a;
 		editor.putString(ID_UNIT, Arrays.toString(ID));
 		editor.putString(NUMBER_OF_WORD, Arrays.toString(Number));
+		editor.putBoolean(LESSON_FINISHED,studiedWord);
 		editor.commit();
 	}
+
+	// Load lại số bài học của người học đã thưc hiện trước đó.
 	public void loadState(){
 		SharedPreferences loadData = this.getActivity().getSharedPreferences(DATA_SAVED,0);
+		studiedWord = loadData.getBoolean(LESSON_FINISHED,false);
 		String IDUNIT = loadData.getString(ID_UNIT, null);
 		String NUMBERWORD = loadData.getString(NUMBER_OF_WORD, null);
 		//m = loadData.getInt(M,0);
@@ -108,12 +119,11 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 		}
 	}
 
+	// load lessons bắt đầu từ lesson 1
 	public void loadLesson(int a, ArrayList<Vocabulary> list){
 		if(list.size() > a){
 			Toast.makeText(getActivity(), "New data had to update!", Toast.LENGTH_SHORT).show();
-			btnAddLesson.setVisibility(View.VISIBLE);
 		}
-		saveState();
 		NumOfLessonAdapter lists = null;
 			int count = 0;
 			int j = 0;
@@ -148,7 +158,7 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 										long arg3) {
 					// TODO Auto-generated method stub
 
-					StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(position).getVocabularies());
+					StudyTypeDFragment studyType = StudyTypeDFragment.newInstance(lessons.get(position).getVocabularies(),position,lessons.size());
 					studyType.show(getActivity().getFragmentManager(), "");
 				}
 
@@ -156,6 +166,7 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 
 	}
 
+	// Chuyển mảng char sang chuỗi
 	public String coverArrayToString(String[] A){
 		String str ="";
 		for(int i=0; i < A.length; i++){
@@ -186,12 +197,22 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 						a = list.size();
 					}
 					loadLesson(a,list);
+					studiedWord = false;
+					btnAddLesson.setVisibility(View.INVISIBLE);
 				}
 				else{
 					Toast.makeText(getActivity(),"New data hadn't to Update!",Toast.LENGTH_SHORT).show();
 				}
 				break;
 			default:break;
+		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if(list.size() > a && studiedWord){
+			btnAddLesson.setVisibility(View.VISIBLE);
 		}
 	}
 }
