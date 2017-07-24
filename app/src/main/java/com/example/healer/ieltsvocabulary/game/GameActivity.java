@@ -97,7 +97,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-
     }
 
     @Override
@@ -131,6 +130,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         image.setImageBitmap(im.decodeFile(A.get(k).getImage()));
         resetLayout();
+        // gọi hàm tạo hai layout
         createRow(A.get(k).getWord(),layoutBlank);
         createRow1(A.get(k).getWord(),layoutResult);
         drag = 0;
@@ -150,7 +150,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         else{
             len1 = len;
         }
-        Log.d("size",String.valueOf(len));
         int count = 0;
         Vector vr = new Vector();
         Random rr = new Random();
@@ -162,7 +161,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                 int k1 = rr.nextInt(A.length);
                 if(!vr.contains(k1)) {
-                    Log.d("k1",String.valueOf(k1));
                     LinearLayout LN = new LinearLayout(this);
                     TableRow.LayoutParams paramsRL = new TableRow.LayoutParams(0, 80);
                     paramsRL.weight = 1;
@@ -321,7 +319,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                            else{
                                break;
                            }
-
                        }
                        break;
                     }
@@ -430,14 +427,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     TV[j].setBackgroundResource(R.drawable.backotrong);
                 }
             }
-
         }
     }
 
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if(motionEvent.getAction()==MotionEvent.ACTION_DOWN){
+        if(motionEvent.getAction()== MotionEvent.ACTION_DOWN){
             ClipData data= ClipData.newPlainText("", "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
             view.startDrag(data, shadowBuilder,view, 0);

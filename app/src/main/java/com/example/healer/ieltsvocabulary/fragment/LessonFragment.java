@@ -184,6 +184,11 @@ public class LessonFragment extends  Fragment implements View.OnClickListener {
 		return str;
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		saveState();
+	}
 
 	@Override
 	public void onClick(View view) {
