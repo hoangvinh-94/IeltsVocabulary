@@ -455,7 +455,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         else{
             return false;
         }
-
     }
 
     @Override

@@ -37,7 +37,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final ActionBar bar = getSupportActionBar();
         bar.show();
-
         HomeAdapter homeAdapter = null;
         ArrayList<Unit> listUnit = new ArrayList<Unit>();
         UnitController uc = new UnitController(this);

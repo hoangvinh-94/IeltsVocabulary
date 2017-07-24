@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/bg_playgame"
-    tools:showIn="@layout/layout_main_game"
+
     android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
@@ -13,13 +13,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <ImageView
-                android:id="@+id/imageShow"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="232dp"
-                android:layout_margin="30dp"
-                android:scaleType="fitXY"
-                android:background="@drawable/image_pressed" />
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageShow"
+                    android:layout_width="match_parent"
+                    android:layout_height="232dp"
+                    android:layout_margin="30dp"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/image_pressed" />
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="40dp"
+                    android:clickable="false"
+                    android:background="@drawable/speaker"/>
+
+            </FrameLayout>
 
             <TableLayout
                 android:id="@+id/layoutBlank"
