@@ -8,7 +8,7 @@
   
  <!-- đặt thuộc tính màu và độ rộng của đường viền -->
  <stroke
- android:width="2dp"
+ android:width="4dp"
  android:color="#FB0818" >
  </stroke>
   

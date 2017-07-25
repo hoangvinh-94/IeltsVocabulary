@@ -361,44 +361,32 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     if(i >= TV.length){
                         String result = "";
-                        // kiểm tra nếu đã chơi hết các từ thì qua màn hình tính điểm
-                        if(v.size() >= vocabularyLesson.size()){
-                            checkWord(result);
-                            CountDownTimer timer = new CountDownTimer(1000 * 3, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                }
+                        for (int k = 0; k < TV.length; k++) {
+                            result += TV[k].getText().toString().trim();
+                        }
+                        checkWord(result);
+                        CountDownTimer timer = new CountDownTimer(1000 * 3, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
 
-                                @Override
-                                public void onFinish() {
-                                    Intent intent = new Intent(getApplicationContext(),ScoreActivity.class);
+                            @Override
+                            public void onFinish() {
+                                // nếu đã hết từ sẽ chuyên sang màn hình kết quả
+                                if(v.size() >= vocabularyLesson.size()) {
+                                    Intent intent = new Intent(getApplicationContext(), ScoreActivity.class);
                                     Bundle bundle = new Bundle();
-                                    bundle.putSerializable("vocabularys",vocabularyLesson);
-                                    bundle.putInt("score",score);
-                                    intent.putExtra("data",bundle);
+                                    bundle.putSerializable("vocabularys", vocabularyLesson);
+                                    bundle.putInt("score", score);
+                                    intent.putExtra("data", bundle);
                                     startActivity(intent);
                                 }
-                            }.start();
-
-                        }
-                        // random từ mới khác
-                        else {
-
-                            for (int k = 0; k < TV.length; k++) {
-                                result += TV[k].getText().toString().trim();
-                            }
-                            checkWord(result);
-                            CountDownTimer timer = new CountDownTimer(1000 * 3, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                }
-
-                                @Override
-                                public void onFinish() {
+                                else{
+                                    // random từ mới khác
                                     randomNewWord(vocabularyLesson, im);
                                 }
-                            }.start();
-                        }
+                            }
+                        }.start();
                     }
                 }
                 break;
@@ -410,6 +398,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // Kiểm tra từ đã kéo đã chính xác không
     public void checkWord( String result){
         if (result.toLowerCase().equals(getString(A))) {
+            for (int j = 0; j < getString(A).length(); j++) {
+                TV[j].setBackgroundResource(R.drawable.backotrongcorrect);
+            }
             MediaPlayer mp= MediaPlayer.create(this,R.raw.matched);
             mp.start();
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -424,12 +415,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if (!TV[j].getText().toString().toLowerCase().equals(String.valueOf(getString(A).charAt(j)))) {
                     TV[j].setBackgroundResource(R.drawable.backotrongerror);
                 } else {
-                    TV[j].setBackgroundResource(R.drawable.backotrong);
+                    TV[j].setBackgroundResource(R.drawable.backotrongcorrect);
                 }
             }
         }
     }
-
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {

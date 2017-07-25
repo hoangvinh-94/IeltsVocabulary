@@ -38,7 +38,7 @@ public class ScoreTestActivity extends AppCompatActivity {
 
         for(int i = 0; i<score ;i++){
             ImageView imgStart = new ImageView(this);
-            TableRow.LayoutParams params = new TableRow.LayoutParams(80,80);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(60,60);
             imgStart.setLayoutParams(params);
             imgStart.setImageResource(R.drawable.star);
             imgStart.setScaleType(ImageView.ScaleType.FIT_XY);
